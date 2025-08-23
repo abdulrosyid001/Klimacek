@@ -1,5 +1,5 @@
 import React from 'react';
-import { Home, Drone, CloudSun } from 'lucide-react';
+import { Home, Airplay, CloudSun } from 'lucide-react';
 
 interface SidebarProps {
   active: 'dashboard' | 'drone' | 'weather';
