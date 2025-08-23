@@ -5,7 +5,18 @@ import Footer from '../components/Footer';
 import StatsBox from '../components/StatsBox';
 import PartnerLogos from '../components/PartnerLogos';
 import TestimonialCard from '../components/TestimonialCard';
+import Marquee from '../components/Marquee';
+import ExpertValidation from '../components/ExpertValidation';
+import AboutHero from '../components/AboutHero';
+import AgricultureMatters from '../components/AgricultureMatters';
 import { testimonials } from '../data/testimonials';
+
+const marqueeText = ['Agriculture', 'AI', 'IoT', 'Vegetables'];
+const experts = [
+  { name: 'Dr. Siti Agrotech', title: 'AgriTech Expert', photo: '/images/expert1.jpg' },
+  { name: 'Prof. Budi IoT', title: 'IoT Specialist', photo: '/images/expert2.jpg' },
+];
+const logos = ['/images/logo1.png', '/images/logo2.png', '/images/logo3.png'];
 
 export default function About() {
   return (
@@ -15,45 +26,44 @@ export default function About() {
       </Head>
       <Header />
       <main className="bg-beige min-h-screen">
-        <section className="max-w-4xl mx-auto px-4 py-12 text-center">
-          <h1 className="font-serif text-4xl font-bold text-primary-900 mb-4">About ATAMAGRI</h1>
-          <p className="text-lg text-primary-700 mb-6">We are a passionate team dedicated to transforming agriculture with technology. Our mission is to empower farmers and agribusinesses with real-time data, AI insights, and reliable IoT solutions for a sustainable future.</p>
-          <div className="flex flex-wrap gap-6 justify-center mb-8">
-            <StatsBox label="Productivity Increase" value="70%" accent="yellow" />
-            <StatsBox label="Years Experience" value={6} accent="green" />
-            <StatsBox label="Awards" value={5} accent="yellow" />
+        {/* 1. Tulisan "About Us" + gambar background tulisan */}
+        <AboutHero title="About Us" backgroundImage="/images/about-bg.jpg" subtitle="Empowering Agriculture with Technology" />
+        {/* 2. Keunggulan produk */}
+        <section className="max-w-7xl mx-auto px-4 py-10 grid grid-cols-1 md:grid-cols-4 gap-6">
+          <StatsBox label="Productivity Increase" value="70%" accent="yellow" />
+          <StatsBox label="Years Experience" value={6} accent="green" />
+          <StatsBox label="Awards" value={5} accent="yellow" />
+          <StatsBox label="Happy Clients" value={1200} accent="green" />
+        </section>
+        {/* 3. Hiasan teks marquee */}
+        <Marquee text={marqueeText} speed={30} direction="left" />
+        {/* 4. Best Agriculture Services */}
+        <section className="max-w-7xl mx-auto px-4 py-12">
+          <h2 className="font-serif text-3xl font-bold text-primary-900 mb-8 text-center">Best Agriculture Services</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <StatsBox label="Atama Climate" value="Weather Station" accent="yellow" />
+            <StatsBox label="Atama Vis" value="Drone System" accent="green" />
+            <StatsBox label="Atama Sense" value="Farm Dashboard" accent="yellow" />
           </div>
         </section>
-        {/* Team Section */}
-        <section className="max-w-5xl mx-auto px-4 py-12 grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
-          <div className="flex justify-center">
-            <img src="/images/team-photo.jpg" alt="ATAMAGRI Team" className="rounded-2xl shadow-lg w-80 h-80 object-cover" />
-          </div>
-          <div>
-            <h2 className="font-serif text-2xl font-bold text-primary-900 mb-3">Our Team</h2>
-            <p className="text-primary-700 mb-4">Our diverse team brings together expertise in agronomy, engineering, and data science. We believe in collaboration, innovation, and making a real impact for farmers everywhere.</p>
-            <ul className="list-disc list-inside text-primary-900 text-sm">
-              <li>Integrated Farm Solutions</li>
-              <li>Affordable IoT Hardware</li>
-              <li>AI-Driven Analytics</li>
-              <li>Dedicated Support</li>
-            </ul>
-          </div>
-        </section>
-        {/* Testimonials */}
+        {/* 5. Agriculture Matters to the Future of Development */}
+        <AgricultureMatters
+          title="Agriculture Matters to the Future of Development"
+          description="We believe agriculture is the backbone of sustainable development. Our solutions are designed to empower farmers, researchers, and agribusinesses to achieve more with less, using the latest in AI and IoT."
+          image="/images/agriculture-matters.jpg"
+        />
+        {/* 6. Validated by Experts, Recognized by Industry */}
+        <ExpertValidation experts={experts} logos={logos} />
+        {/* 7. What Our Customers Say (testimonials) */}
         <section className="max-w-5xl mx-auto px-4 py-12">
-          <h2 className="font-serif text-2xl font-bold text-primary-900 mb-6 text-center">Testimonials</h2>
+          <h2 className="font-serif text-2xl font-bold text-primary-900 mb-6 text-center">What Our Customers Say</h2>
           <div className="flex flex-wrap gap-8 justify-center">
             {testimonials.map((t) => (
               <TestimonialCard key={t.id} testimonial={t} />
             ))}
           </div>
         </section>
-        {/* Partners */}
-        <section className="max-w-5xl mx-auto px-4 py-12">
-          <h2 className="font-serif text-2xl font-bold text-primary-900 mb-6 text-center">Our Partners</h2>
-          <PartnerLogos />
-        </section>
+        {/* 8. Footer */}
       </main>
       <Footer />
     </>
