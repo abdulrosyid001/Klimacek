@@ -8,7 +8,7 @@ interface SidebarProps {
 
 const menus = [
   { key: 'dashboard', label: 'Dashboard', icon: <Home /> },
-  { key: 'drone', label: 'Drone Control', icon: <Drone /> },
+  { key: 'drone', label: 'Drone Control', icon: <Airplay /> },
   { key: 'weather', label: 'Weather Station', icon: <CloudSun /> },
 ];
 
