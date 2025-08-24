@@ -18,7 +18,7 @@ export default function Contact() {
       <Header />
       <main className="bg-beige min-h-screen">
         {/* 1. Tulisan "Contact Us" + background tulisan */}
-        <ContactHero title="Contact Us" backgroundImage="/images/contact-bg.jpg" subtitle="We'd love to hear from you!" />
+        <ContactHero title="Contact Us" backgroundImage="/images/contact-bg.png" subtitle="We'd love to hear from you!" />
         {/* 2. Kontak yang dapat dihubungi */}
         <section className="max-w-4xl mx-auto px-4 flex flex-col md:flex-row gap-8 mb-12">
           <ContactCard icon={Mail} title="Mail Us" value="info@atamagri.com" href="mailto:info@atamagri.com" />
@@ -28,7 +28,7 @@ export default function Contact() {
         {/* 3. Section "Have any questions? Get in touch" */}
         <section className="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-10 items-start mb-12">
           <div className="flex justify-center">
-            <img src="/images/team-photo.jpg" alt="ATAMAGRI Expo" className="rounded-2xl shadow-lg w-80 h-80 object-cover" />
+            <img src="/images/team-photo.png" alt="ATAMAGRI Expo" className="rounded-2xl shadow-lg w-80 h-80 object-cover" />
           </div>
           <div>
             <ContactForm />
