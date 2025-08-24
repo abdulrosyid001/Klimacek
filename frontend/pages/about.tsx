@@ -13,8 +13,8 @@ import { testimonials } from '../data/testimonials';
 
 const marqueeText = ['Agriculture', 'AI', 'IoT', 'Vegetables'];
 const experts = [
-  { name: 'Dr. Siti Agrotech', title: 'AgriTech Expert', photo: '/images/expert1.jpg' },
-  { name: 'Prof. Budi IoT', title: 'IoT Specialist', photo: '/images/expert2.jpg' },
+  { name: 'Dr. Siti Agrotech', title: 'AgriTech Expert', photo: '/images/expert1.png' },
+  { name: 'Prof. Budi IoT', title: 'IoT Specialist', photo: '/images/expert2.png' },
 ];
 const logos = ['/images/logo1.png', '/images/logo2.png', '/images/logo3.png'];
 
@@ -27,7 +27,7 @@ export default function About() {
       <Header />
       <main className="bg-beige min-h-screen">
         {/* 1. Tulisan "About Us" + gambar background tulisan */}
-        <AboutHero title="About Us" backgroundImage="/images/about-bg.jpg" subtitle="Empowering Agriculture with Technology" />
+        <AboutHero title="About Us" backgroundImage="/images/about-bg.png" subtitle="Empowering Agriculture with Technology" />
         {/* 2. Keunggulan produk */}
         <section className="max-w-7xl mx-auto px-4 py-10 grid grid-cols-1 md:grid-cols-4 gap-6">
           <StatsBox label="Productivity Increase" value="70%" accent="yellow" />
