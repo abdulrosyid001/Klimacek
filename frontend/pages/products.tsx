@@ -41,7 +41,7 @@ export default function Products() {
       <Header />
       <main className="bg-beige min-h-screen">
         {/* 1. Tulisan "Our Product" + background tulisan */}
-        <ProductHero title="Our Product" backgroundImage="/images/products-bg.jpg" subtitle="Digital & IoT Solutions for Modern Agriculture" />
+        <ProductHero title="Our Product" backgroundImage="/images/products-bg.png" subtitle="Digital & IoT Solutions for Modern Agriculture" />
         {/* 2. Daftar produk yang dijual */}
         <section className="max-w-7xl mx-auto px-4 py-8 grid grid-cols-1 md:grid-cols-3 gap-8">
           {products.map((product) => (

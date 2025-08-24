@@ -50,7 +50,7 @@ export default function About() {
         <AgricultureMatters
           title="Agriculture Matters to the Future of Development"
           description="We believe agriculture is the backbone of sustainable development. Our solutions are designed to empower farmers, researchers, and agribusinesses to achieve more with less, using the latest in AI and IoT."
-          image="/images/agriculture-matters.jpg"
+          image="/images/agriculture-matters.png"
         />
         {/* 6. Validated by Experts, Recognized by Industry */}
         <ExpertValidation experts={experts} logos={logos} />
