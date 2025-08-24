@@ -54,7 +54,7 @@ export default function Home() {
         {/* 1. Garis besar dari website */}
         <Hero />
         {/* 2. Menu "Contact Us" + gambar background tulisan */}
-        <section className="relative w-full h-64 flex items-center justify-center text-center mb-8" style={{ backgroundImage: 'url(/images/hero-bg.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+        <section className="relative w-full h-64 flex items-center justify-center text-center mb-8" style={{ backgroundImage: 'url(/images/hero-bg.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
           <div className="absolute inset-0 bg-primary-900/60" />
           <div className="relative z-10">
             <h2 className="text-3xl md:text-4xl font-bold text-white drop-shadow-lg mb-2">Contact Us Anytime</h2>
