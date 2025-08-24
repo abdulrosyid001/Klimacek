@@ -22,7 +22,7 @@ import { BarChart2, Brain, Activity, ShieldCheck, Leaf, Tractor, CloudSun, Users
 
 // Dummy data for new sections
 const marqueeText = ['Agriculture', 'AI', 'IoT', 'Vegetables'];
-const carouselImages = ['/images/farm1.jpg', '/images/farm2.jpg', '/images/farm3.jpg'];
+const carouselImages = ['/images/farm1.png', '/images/farm2.png', '/images/farm3.png'];
 const solutions = [
   { icon: <Leaf />, title: 'Smallholder Farms', description: 'Affordable solutions for small-scale farmers.' },
   { icon: <Tractor />, title: 'Commercial Farms', description: 'Scalable tech for large operations.' },
