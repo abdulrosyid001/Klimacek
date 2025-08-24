@@ -34,9 +34,9 @@ const experts = [
 ];
 const logos = ['/images/logo1.png', '/images/logo2.png', '/images/logo3.png'];
 const posts = [
-  { id: '1', title: 'How AI is Changing Farming', excerpt: 'Discover the impact of AI on modern agriculture...', image: '/images/post1.jpg', link: '#' },
-  { id: '2', title: 'IoT for Smallholders', excerpt: 'Affordable IoT solutions for every farmer...', image: '/images/post2.jpg', link: '#' },
-  { id: '3', title: 'Precision Agriculture', excerpt: 'Data-driven decisions for better yields...', image: '/images/post3.jpg', link: '#' },
+  { id: '1', title: 'How AI is Changing Farming', excerpt: 'Discover the impact of AI on modern agriculture...', image: '/images/post1.png', link: '#' },
+  { id: '2', title: 'IoT for Smallholders', excerpt: 'Affordable IoT solutions for every farmer...', image: '/images/post2.png', link: '#' },
+  { id: '3', title: 'Precision Agriculture', excerpt: 'Data-driven decisions for better yields...', image: '/images/post3.png', link: '#' },
 ];
 const checkoutLinks = [
   { label: 'Buy Now', href: '/products' },
