@@ -20,7 +20,7 @@ export default function Contact() {
         {/* 1. Tulisan "Contact Us" + background tulisan */}
         <ContactHero title="Contact Us" backgroundImage="/images/contact-bg.png" subtitle="We'd love to hear from you!" />
         {/* 2. Kontak yang dapat dihubungi */}
-        <section className="max-w-4xl mx-auto px-4 flex flex-col md:flex-row gap-8 mb-12">
+        <section className="max-w-4xl mx-auto px-4 flex flex-col md:flex-row gap-8 mb-12 justify-center items-center text-center">
           <ContactCard icon={Mail} title="Mail Us" value="info@atamagri.com" href="mailto:info@atamagri.com" />
           <ContactCard icon={Phone} title="Call Us" value="+62 812-3456-789" href="tel:+628123456789" />
           <ContactCard icon={MapPin} title="Our Location" value="Bandung, Indonesia" />
@@ -39,11 +39,20 @@ export default function Contact() {
           <h2 className="font-serif text-2xl font-bold text-primary-900 mb-6 text-center">Partner & Incubation</h2>
           <PartnerLogos />
         </section>
-        {/* 5. Lokasi bisnis (peta) */}
-        <section className="max-w-6xl mx-auto px-4 mb-12">
-          <MapEmbed />
+        {/* 5. Map Location */}
+        <section className="max-w-5xl mx-auto px-4 py-12">
+          <h2 className="font-serif text-2xl font-bold text-primary-900 mb-6 text-center">Our Location Map</h2>
+          <iframe
+            title="ATAMAGRI Location"
+            src="https://www.google.com/maps?q=Daratan,+RT+2+RW+6,+Senden,+Tohudan,+Kecamatan+Colomadu,+Kabupaten+Karanganyar,+Jawa+Tengah&output=embed"
+            width="100%"
+            height="350"
+            className="rounded-xl border-2 border-primary-200 w-full"
+            allowFullScreen
+            loading="lazy"
+          ></iframe>
         </section>
-        {/* 6. Footer */}
+  {/* 6. Footer */}
       </main>
       <Footer />
     </>

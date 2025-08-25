@@ -19,7 +19,7 @@ const Marquee: React.FC<MarqueeProps> = ({ text, speed = 40, direction = 'left' 
           duration: speed,
           ease: 'linear',
         }}
-        className="inline-block text-lg font-semibold text-primary-700"
+        className="inline-block text-2xl md:text-3xl font-bold text-primary-700"
       >
         {text.join('  •  ')}
       </motion.div>

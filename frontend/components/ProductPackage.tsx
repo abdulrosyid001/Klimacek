@@ -7,6 +7,7 @@ interface ProductPackageProps {
     features: string[];
     accent?: string;
     best?: boolean;
+    image?: string;
   }[];
 }
 
@@ -17,16 +18,21 @@ const ProductPackage: React.FC<ProductPackageProps> = ({ packages }) => (
       {packages.map((pkg, idx) => (
         <div
           key={idx}
-          className={`rounded-2xl shadow-lg p-6 bg-white flex-1 ${pkg.best ? 'border-4 border-primary-700' : ''}`}
+          className={`rounded-2xl shadow-lg p-6 bg-white flex-1 flex flex-col md:flex-row items-center gap-4 ${pkg.best ? 'border-4 border-primary-700' : ''}`}
         >
-          <h3 className="font-bold text-xl mb-2">{pkg.title}</h3>
-          <div className="text-3xl font-bold text-primary-700 mb-4">{pkg.price}</div>
-          <ul className="mb-4 text-primary-700">
-            {pkg.features.map((f, i) => (
-              <li key={i} className="mb-1">• {f}</li>
-            ))}
-          </ul>
-          {pkg.best && <div className="text-xs font-bold text-primary-700">Best Value</div>}
+          {pkg.image && (
+            <img src={pkg.image} alt={pkg.title} className="w-28 h-28 object-contain mb-4 md:mb-0 md:mr-4" />
+          )}
+          <div className="flex-1">
+            <h3 className="font-bold text-xl mb-2">{pkg.title}</h3>
+            <div className="text-3xl font-bold text-primary-700 mb-4">{pkg.price}</div>
+            <ul className="mb-4 text-primary-700">
+              {pkg.features.map((f, i) => (
+                <li key={i} className="mb-1">• {f}</li>
+              ))}
+            </ul>
+            {pkg.best && <div className="text-xs font-bold text-primary-700">Best Value</div>}
+          </div>
         </div>
       ))}
     </div>

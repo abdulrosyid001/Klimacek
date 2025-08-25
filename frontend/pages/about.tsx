@@ -11,12 +11,18 @@ import AboutHero from '../components/AboutHero';
 import AgricultureMatters from '../components/AgricultureMatters';
 import { testimonials } from '../data/testimonials';
 
+
 const marqueeText = ['Agriculture', 'AI', 'IoT', 'Vegetables'];
-const experts = [
-  { name: 'Dr. Siti Agrotech', title: 'AgriTech Expert', photo: '/images/expert1.png' },
-  { name: 'Prof. Budi IoT', title: 'IoT Specialist', photo: '/images/expert2.png' },
+const awards = [
+  { photo: '/images/award1.png', position: 'Juara 1', competition: 'AgriTech National 2024' },
+  { photo: '/images/award2.png', position: 'Juara 2', competition: 'Smart Farming Expo' },
+  { photo: '/images/award3.png', position: 'Juara 1', competition: 'IoT Challenge 2023' },
+  { photo: '/images/award4.png', position: 'Juara 3', competition: 'AI for Agriculture' },
+  { photo: '/images/award5.png', position: 'Juara Harapan', competition: 'Startup Incubation' },
+  { photo: '/images/award6.png', position: 'Finalis', competition: 'Tech Innovator' },
+  { photo: '/images/award7.png', position: 'Juara 2', competition: 'Green Future Award' },
+  { photo: '/images/award8.png', position: 'Juara 1', competition: 'Digital Farming Fest' },
 ];
-const logos = ['/images/logo1.png', '/images/logo2.png', '/images/logo3.png'];
 
 export default function About() {
   return (
@@ -27,7 +33,7 @@ export default function About() {
       <Header />
       <main className="bg-beige min-h-screen">
         {/* 1. Tulisan "About Us" + gambar background tulisan */}
-        <AboutHero title="About Us" backgroundImage="/images/about-bg.png" subtitle="Empowering Agriculture with Technology" />
+        <AboutHero title="About Us" backgroundImage="/images/about-bg.png" subtitle={<span className="text-white">Empowering Agriculture with Technology</span>} />
         {/* 2. Keunggulan produk */}
         <section className="max-w-7xl mx-auto px-4 py-10 grid grid-cols-1 md:grid-cols-4 gap-6">
           <StatsBox label="Productivity Increase" value="70%" accent="yellow" />
@@ -53,7 +59,7 @@ export default function About() {
           image="/images/agriculture-matters.png"
         />
         {/* 6. Validated by Experts, Recognized by Industry */}
-        <ExpertValidation experts={experts} logos={logos} />
+        <ExpertValidation awards={awards} />
         {/* 7. What Our Customers Say (testimonials) */}
         <section className="max-w-5xl mx-auto px-4 py-12">
           <h2 className="font-serif text-2xl font-bold text-primary-900 mb-6 text-center">What Our Customers Say</h2>
