@@ -28,9 +28,47 @@ const solutions = [
   { icon: <Tractor />, title: 'Commercial Farms', description: 'Scalable tech for large operations.' },
   { icon: <CloudSun />, title: 'Research & Education', description: 'Tools for agri-research and learning.' },
 ];
-const experts = [
-  { name: 'Dr. Siti Agrotech', title: 'AgriTech Expert', photo: '/images/expert1.jpg' },
-  { name: 'Prof. Budi IoT', title: 'IoT Specialist', photo: '/images/expert2.jpg' },
+const awards = [
+  {
+    photo: "/images/award1.jpg",
+    position: "1st Place",
+    competition: "elevAte Indonesia Hackathon",
+  },
+  {
+    photo: "/images/award2.jpg",
+    position: "1st Place",
+    competition: "International Walisongo Competition",
+  },
+  {
+    photo: "/images/award3.jpg",
+    position: "1st Place",
+    competition: "Creativity and Innovation Competition (KRENOVA)",
+  },
+  {
+    photo: "/images/award4.jpg",
+    position: "Finalist",
+    competition: "Indonesia AI Innovation Challenge",
+  },
+  {
+    photo: "/images/award5.jpg",
+    position: "Finalist",
+    competition: "SMESTA x KemenKop UKM",
+  },
+  {
+    photo: "/images/award6.jpg",
+    position: "Top 5",
+    competition: "TDC Business Competition",
+  },
+  {
+    photo: "/images/award7.jpg",
+    position: "Top 30",
+    competition: "Pertamuda (Pertamina Young Entrepreneurs)",
+  },
+  {
+    photo: "/images/award8.jpg",
+    position: "etc.",
+    competition: "",
+  },
 ];
 const logos = ['/images/logo1.png', '/images/logo2.png', '/images/logo3.png'];
 const posts = [
@@ -109,7 +147,7 @@ export default function Home() {
         {/* 11. Menu menuju "Checkout" */}
         <CheckoutMenu links={checkoutLinks} />
         {/* 12. Validated by Experts, Recognized by Industry */}
-        <ExpertValidation experts={experts} logos={logos} />
+        <ExpertValidation awards={awards} />
         {/* 13. Latest Posts & Articles */}
         <LatestPosts posts={posts} />
         {/* 14. Footer */}
