@@ -33,7 +33,7 @@ export default function About() {
       <Header />
       <main className="bg-beige min-h-screen">
         {/* 1. Tulisan "About Us" + gambar background tulisan */}
-        <AboutHero title="About Us" backgroundImage="/images/about-bg.png" subtitle={<span className="text-white">Empowering Agriculture with Technology</span>} />
+        <AboutHero title="About Us" backgroundImage="/images/about-bg.png" subtitle="Empowering Agriculture with Technology" />
         {/* 2. Keunggulan produk */}
         <section className="max-w-7xl mx-auto px-4 py-10 grid grid-cols-1 md:grid-cols-4 gap-6">
           <StatsBox label="Productivity Increase" value="70%" accent="yellow" />
