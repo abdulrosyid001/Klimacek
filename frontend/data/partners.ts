@@ -1,5 +1,5 @@
 export const partners = [
-  { name: 'AgriTech Hub', logo: '/images/partner-1.png' },
-  { name: 'GreenFarm', logo: '/images/partner-2.png' },
-  { name: 'IoT Incubator', logo: '/images/partner-3.png' }
+  {logo: '/images/partner-1.png' },
+  {logo: '/images/partner-2.png' },
+  {logo: '/images/partner-3.png' }
 ];
