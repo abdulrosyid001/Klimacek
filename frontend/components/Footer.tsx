@@ -4,7 +4,7 @@ import Link from 'next/link';
 export default function Footer() {
   return (
     <footer className="bg-primary-900 text-neutral-100 py-12 mt-16">
-      <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-10">
+      <div className="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-6 items-start">
         {/* Logo & About */}
         <div className="flex flex-col">
           <div className="flex items-center gap-2 mb-3">
@@ -47,7 +47,7 @@ export default function Footer() {
         <div className="flex flex-col">
           <h4 className="font-semibold mb-3 text-accent-yellow">Info & Contact</h4>
           <p className="text-neutral-200 text-sm">Mon-Fri: 08.00 - 17.00</p>
-          <p className="text-neutral-200 text-sm break-words">
+          <p className="text-neutral-200 text-sm leading-relaxed">
             Daratan, RT 2 RW 6, Senden, Tohudan, Colomadu, Karanganyar, Jawa Tengah
           </p>
           <p className="text-neutral-200 text-sm">Phone: <a href="tel:+628123456789" className="underline">+62 812-3456-789</a></p>
