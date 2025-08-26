@@ -4,7 +4,7 @@ import Link from 'next/link';
 export default function Footer() {
   return (
     <footer className="bg-primary-900 text-neutral-100 py-12 mt-16">
-      <div className="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-6 items-start">
+      <div className="w-full max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-6 items-start">
         {/* Logo & About */}
         <div className="flex flex-col">
           <div className="flex items-center gap-2 mb-3">
@@ -57,7 +57,7 @@ export default function Footer() {
         {/* Subscribe Email */}
         <div className="flex flex-col">
           <h4 className="font-semibold mb-3 text-accent-yellow">Subscribe</h4>
-          <form className="mt-2 flex gap-2 max-w-sm">
+          <form className="mt-2 flex gap-2 w-full md:w-[220px]">
             <input
               type="email"
               placeholder="Your email"
