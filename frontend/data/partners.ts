@@ -1,8 +1,8 @@
 export const partners = [
-  { name: 'AgriTech Hub', logo: '/images/partner-1.png' },
-  { name: 'GreenFarm', logo: '/images/partner-2.png' },
-  { name: 'IoT Incubator', logo: '/images/partner-3.png' },
-  { name: 'ClimateX', logo: '/images/partner-4.png' },
-  { name: 'Farm Innovators', logo: '/images/partner-5.png' },
-  { name: 'AgroFuture', logo: '/images/partner-6.png' },
+  { name: '', logo: '/images/lppm.png' },
+  { name: '', logo: '/images/brida.png' },
+  { name: '', logo: '/images/enuma.png' },
+  { name: '', logo: '/images/stp.png' },
+  { name: '', logo: '/images/semesta.png' },
+  { name: '', logo: '/images/p2mw.png' },
 ];
