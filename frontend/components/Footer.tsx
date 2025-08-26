@@ -4,7 +4,7 @@ import Link from 'next/link';
 export default function Footer() {
   return (
     <footer className="bg-primary-900 text-neutral-100 py-12 mt-16">
-      <div className="w-full max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-6 items-start">
+      <div className="w-full max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-6 items-start overflow-hidden">
         {/* Logo & About */}
         <div className="flex flex-col">
           <div className="flex items-center gap-2 mb-3">
@@ -57,16 +57,16 @@ export default function Footer() {
         {/* Subscribe Email */}
         <div className="flex flex-col">
           <h4 className="font-semibold mb-3 text-accent-yellow">Subscribe</h4>
-          <form className="mt-2 flex gap-2 w-full md:w-[220px]">
+          <form className="mt-2 flex flex-wrap gap-2">
             <input
               type="email"
               placeholder="Your email"
-              className="flex-1 px-3 py-2 rounded-l bg-neutral-200 text-primary-900 focus:outline-none"
+              className="flex-1 min-w-[150px] max-w-xs px-3 py-2 rounded bg-neutral-200 text-primary-900 focus:outline-none"
               aria-label="Newsletter email"
             />
             <button
               type="submit"
-              className="bg-accent-yellow text-primary-900 px-4 py-2 rounded-r font-semibold hover:bg-primary-500 hover:text-white transition-colors"
+              className="bg-accent-yellow text-primary-900 px-4 py-2 rounded font-semibold hover:bg-primary-500 hover:text-white transition-colors"
             >
               Subscribe
             </button>
