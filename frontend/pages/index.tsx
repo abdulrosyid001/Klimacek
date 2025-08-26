@@ -30,42 +30,42 @@ const solutions = [
 ];
 const awards = [
   {
-    photo: "/images/award1.jpg",
+    photo: "/images/award1.png",
     position: "1st Place",
     competition: "elevAte Indonesia Hackathon",
   },
   {
-    photo: "/images/award2.jpg",
+    photo: "/images/award2.png",
     position: "1st Place",
     competition: "International Walisongo Competition",
   },
   {
-    photo: "/images/award3.jpg",
+    photo: "/images/award3.png",
     position: "1st Place",
     competition: "Creativity and Innovation Competition (KRENOVA)",
   },
   {
-    photo: "/images/award4.jpg",
+    photo: "/images/award4.png",
     position: "Finalist",
     competition: "Indonesia AI Innovation Challenge",
   },
   {
-    photo: "/images/award5.jpg",
+    photo: "/images/award5.png",
     position: "Finalist",
     competition: "SMESTA x KemenKop UKM",
   },
   {
-    photo: "/images/award6.jpg",
+    photo: "/images/award6.png",
     position: "Top 5",
     competition: "TDC Business Competition",
   },
   {
-    photo: "/images/award7.jpg",
+    photo: "/images/award7.png",
     position: "Top 30",
     competition: "Pertamuda (Pertamina Young Entrepreneurs)",
   },
   {
-    photo: "/images/award8.jpg",
+    photo: "/images/award8.png",
     position: "etc.",
     competition: "",
   },
