@@ -22,7 +22,7 @@ const ExpertValidation: React.FC<ExpertValidationProps> = ({ awards }) => (
           <img
             src={award.photo}
             alt={award.competition}
-            className="w-20 h-20 rounded-xl mb-2 object-cover border-4 border-primary-200"
+            className="w-28 h-28 md:w-32 md:h-32 rounded-xl mb-3 object-cover border-4 border-primary-200 shadow-md"
           />
           <div className="font-semibold text-primary-900">{award.position}</div>
           <div className="text-primary-700 text-sm text-center">{award.competition}</div>
