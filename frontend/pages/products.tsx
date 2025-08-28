@@ -30,7 +30,7 @@ const packages = [
     ],
     accent: 'green',
     best: true,
-    image: '/images/pro package.png',
+    image: '/images/pro-package.png',
   },
 ];
 
