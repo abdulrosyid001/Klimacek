@@ -8,7 +8,7 @@ export default function Footer() {
         {/* Logo & About */}
         <div className="flex flex-col">
           <div className="flex items-center mb-3">
-            <img src="/images/logo.png" alt="Atama Agri Logo" className="h-10 w-10 rounded-full" />
+            <img src="/images/logo.png" alt="Atama Agri Logo" className="h-12 w-12 rounded-full" />
           </div>
           <p className="text-neutral-200 text-sm mb-4 leading-relaxed">
             Climate intelligence for smart agriculture. Empowering farmers with data-driven tools, IoT, and AI for a sustainable future.
