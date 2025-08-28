@@ -22,8 +22,9 @@ const Marquee: React.FC<MarqueeProps> = ({ text, speed = 20, direction = "left" 
           duration: speed,
           ease: "linear",
         }}
+        style={{ minWidth: "200%" }} // panjang container = 200%
       >
-        {/* duplikasi konten 2 kali untuk looping mulus */}
+        {/* Duplikasi konten dua kali biar mulus */}
         <span className="text-4xl md:text-5xl font-bold text-primary-700 px-8">
           {content}
         </span>
