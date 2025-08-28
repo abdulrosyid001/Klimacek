@@ -18,7 +18,7 @@ const packages = [
       'AI-powered recommendations',
     ],
     accent: 'yellow',
-    image: '/images/product-laptop.png',
+    image: '/images/starter-package.png',
   },
   {
     title: 'Pro Package',
@@ -30,7 +30,7 @@ const packages = [
     ],
     accent: 'green',
     best: true,
-    image: '/images/product-drone.png',
+    image: '/images/pro package.png',
   },
 ];
 
