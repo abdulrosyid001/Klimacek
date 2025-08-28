@@ -26,11 +26,15 @@ export default function Contact() {
           <ContactCard icon={MapPin} title="Our Location" value="Bandung, Indonesia" />
         </section>
         {/* 3. Section "Have any questions? Get in touch" */}
-        <section className="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-10 items-start mb-12">
+        <section className="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-10 items-stretch mb-12">
           <div className="flex justify-center">
-            <img src="/images/team-photo.png" alt="ATAMAGRI Expo" className="rounded-2xl shadow-lg w-80 h-80 object-cover" />
+            <img
+              src="/images/team-photo.png"
+              alt="ATAMAGRI Expo"
+              className="rounded-2xl shadow-lg object-cover w-full h-full max-h-[700px]"
+            />
           </div>
-          <div>
+          <div className="flex">
             <ContactForm />
           </div>
         </section>
