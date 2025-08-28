@@ -15,7 +15,7 @@ const Marquee: React.FC<MarqueeProps> = ({ text, speed = 20, direction = "left" 
       <motion.div
         className="flex whitespace-nowrap"
         animate={{
-          x: direction === "left" ? ["0%", "-50%"] : ["-50%", "0%"],
+          x: direction === "left" ? ["0%", "-100%"] : ["-100%", "0%"],
         }}
         transition={{
           x: {
@@ -25,9 +25,12 @@ const Marquee: React.FC<MarqueeProps> = ({ text, speed = 20, direction = "left" 
             ease: "linear",
           },
         }}
-        style={{ width: "200%" }} // Ensure container is wide enough for seamless looping
+        style={{ width: "300%" }} // Ensure container is wide enough for seamless looping
       >
         {/* Duplicate content for continuous flow */}
+        <span className="text-4xl md:text-5xl font-bold text-primary-700 px-8">
+          {content}
+        </span>
         <span className="text-4xl md:text-5xl font-bold text-primary-700 px-8">
           {content}
         </span>
