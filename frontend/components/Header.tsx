@@ -17,7 +17,7 @@ export default function Header() {
       <nav className="max-w-7xl mx-auto flex items-center justify-between px-4 py-3 md:py-4">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
-          <img src="/images/logo.png" alt="Atama Agri Logo" className="h-9 w-9 rounded-full bg-primary-700" />
+          <img src="/images/logo.png" alt="Atama Agri Logo" className="h-9 w-9 rounded-full" />
           <span className="font-serif text-xl font-bold text-primary-900">ATAMAGRI</span>
         </Link>
         {/* Desktop Nav */}
