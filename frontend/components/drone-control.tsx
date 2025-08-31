@@ -6,7 +6,7 @@ import { Button } from "./ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs"
 import { DroneStatus, Prediction } from "../types/drone"
 import { useToast } from "./ui/use-toast"
-import { Select } from "./ui/select"
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select"
 
 export default function DroneControl() {
   const [isConnected, setIsConnected] = useState(false)
@@ -138,12 +138,15 @@ export default function DroneControl() {
                 setSource(value as 'tello' | 'webcam')
                 connectToDevice(value as 'tello' | 'webcam')
               }}
-              options={[
-                { label: 'Tello Drone', value: 'tello' },
-                { label: 'Webcam', value: 'webcam' }
-              ]}
-              className="w-[180px]"
-            />
+            >
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Pilih perangkat" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="tello">Tello Drone</SelectItem>
+                <SelectItem value="webcam">Webcam</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
         </div>
       </div>
@@ -159,12 +162,15 @@ export default function DroneControl() {
             setSource(value as 'tello' | 'webcam')
             connectToDevice(value as 'tello' | 'webcam')
           }}
-          options={[
-            { label: 'Tello Drone', value: 'tello' },
-            { label: 'Webcam', value: 'webcam' }
-          ]}
-          className="w-[180px] bg-black bg-opacity-50 text-white border-none"
-        />
+        >
+          <SelectTrigger className="w-[180px] bg-black bg-opacity-50 text-white border-none">
+            <SelectValue placeholder="Pilih perangkat" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="tello">Tello Drone</SelectItem>
+            <SelectItem value="webcam">Webcam</SelectItem>
+          </SelectContent>
+        </Select>
         <div className="bg-black bg-opacity-50 text-white px-3 py-1 rounded-full text-sm">
           {source === 'tello' ? 'Connected to Tello' : 'Using Webcam'}
         </div>
