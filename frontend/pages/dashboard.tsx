@@ -6,5 +6,14 @@ import DroneControl from '../components/drone-control';
 import WeatherStation from '../components/WeatherStation';
 import Footer from '../components/Footer';
 
-// Deprecated: Dashboard now handled by pages/page.tsx
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+
+export default function Dashboard() {
+	const router = useRouter();
+	useEffect(() => {
+		router.replace("/page");
+	}, [router]);
+	return null;
+}
 //
