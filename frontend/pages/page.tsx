@@ -292,6 +292,7 @@ export default function Dashboard() {
   })
   const [dateRange, setDateRange] = useState("last7days")
   const [exportFormat, setExportFormat] = useState("csv")
+  const [tab, setTab] = useState("sensors")
 
   // Calculate summary data
   const activeStationsCount = userStations.filter((station) => station.status === "active").length
@@ -936,7 +937,7 @@ export default function Dashboard() {
                 </div>
 
                 {/* Tabs for different views */}
-                <Tabs defaultValue="sensors" className="mb-6">
+                <Tabs value={tab} onValueChange={setTab} className="mb-6">
                   <TabsList>
                     <TabsTrigger value="sensors">Sensors</TabsTrigger>
                     <TabsTrigger value="forecast">Weather Forecast</TabsTrigger>
