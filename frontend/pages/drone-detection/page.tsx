@@ -3,7 +3,12 @@
 import { useEffect, useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import {
+  Tabs,
+  TabsList,
+  TabsTrigger,
+  TabsContent,
+} from "@/components/ui/tabs"
 import { AlertCircle, Battery, Camera, Compass, Loader2, Play, Square, Map, Settings, Wifi, WifiOff } from "lucide-react"
 import { Progress } from "@/components/ui/progress"
 import MissionPlanner from "./mission-planner"
