@@ -1,6 +1,8 @@
+
 import React from 'react';
 import MapEmbed from './MapEmbed';
 import { DashboardCard } from './DashboardCards';
+import DroneControl from './drone-control';
 
 const DashboardMain: React.FC = () => (
   <div className="flex flex-col gap-8">
@@ -12,32 +14,16 @@ const DashboardMain: React.FC = () => (
       <DashboardCard title="Rata-rata Kelembaban" value="68%" color="bg-primary-900" />
     </div>
 
-    {/* Drone Operations */}
+    {/* Drone Operations - Integrasi DroneControl */}
     <div className="bg-white rounded-xl shadow p-8">
       <h2 className="font-serif text-xl font-bold text-primary-900 mb-4">Drone Operations</h2>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-        <div>
-          <div className="text-2xl font-bold text-primary-700">87%</div>
-          <div className="text-sm text-primary-900">Battery</div>
-        </div>
-        <div>
-          <div className="text-2xl font-bold text-primary-700">Strong</div>
-          <div className="text-sm text-primary-900">Signal</div>
-        </div>
-        <div>
-          <div className="text-2xl font-bold text-primary-700">3</div>
-          <div className="text-sm text-primary-900">Detections</div>
-        </div>
-        <div>
-          <div className="text-2xl font-bold text-primary-700">12 ha</div>
-          <div className="text-sm text-primary-900">Area Scanned</div>
-        </div>
-      </div>
+      <DroneControl />
     </div>
 
     {/* Data Penyakit Terakhir */}
     <div className="bg-white rounded-xl shadow p-8">
       <h3 className="font-semibold text-lg mb-2">Data Penyakit Terakhir</h3>
+      {/* TODO: Integrasi data penyakit dari backend jika tersedia */}
       <div className="overflow-x-auto">
         <table className="min-w-full text-left text-primary-900">
           <thead>
