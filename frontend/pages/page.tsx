@@ -73,6 +73,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import Link from "next/link"
 import { useState } from "react"
 import DroneControl from "@/components/drone-control"
+import { cn } from "@/lib/utils"
 
 // Mock data for charts
 const temperatureData = [
@@ -486,7 +487,11 @@ export default function Dashboard() {
                         setActiveView("dashboard")
                         setSelectedStation(null)
                       }}
-                      isActive={activeView === "dashboard" && !selectedStation}
+                      className={cn(
+                        activeView === "dashboard" && !selectedStation
+                          ? "bg-primary text-white"
+                          : "bg-muted"
+                      )}
                     >
                       <BarChart3 className="w-4 h-4" />
                       Dashboard
@@ -498,7 +503,11 @@ export default function Dashboard() {
                         setActiveView("drone")
                         setSelectedStation(null)
                       }}
-                      isActive={activeView === "drone"}
+                      className={cn(
+                        activeView === "drone"
+                          ? "bg-primary text-white"
+                          : "bg-muted"
+                      )}
                     >
                       <Plane className="w-4 h-4" />
                       Drone Control
@@ -525,7 +534,11 @@ export default function Dashboard() {
                           setSelectedStation(station.id)
                           setActiveView("dashboard")
                         }}
-                        isActive={selectedStation === station.id}
+                        className={cn(
+                          selectedStation === station.id
+                            ? "bg-primary text-white"
+                            : "bg-muted"
+                        )}
                       >
                         <div className="flex items-center">
                           {station.status === "active" ? (
