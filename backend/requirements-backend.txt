@@ -1,0 +1,7 @@
+fastapi
+uvicorn
+pillow
+opencv-python-headless
+djitellopy  # optional, for drone mode
+python-multipart
+uvicorn[standard]
