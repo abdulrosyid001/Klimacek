@@ -585,7 +585,7 @@ export default function Dashboard() {
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
-                  <Link href="/dashboard" className="flex items-center w-full">
+                  <Link href="/page" className="flex items-center w-full">
                     Logout
                   </Link>
                 </DropdownMenuItem>

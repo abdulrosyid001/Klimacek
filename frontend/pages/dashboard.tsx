@@ -12,7 +12,7 @@ import { useEffect } from "react";
 export default function Dashboard() {
 	const router = useRouter();
 	useEffect(() => {
-		router.replace("/dashboard");
+		router.replace("/page");
 	}, [router]);
 	return null;
 }
