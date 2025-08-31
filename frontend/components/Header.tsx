@@ -7,7 +7,7 @@ const navLinks = [
   { name: 'About', href: '/about' },
   { name: 'Products', href: '/products' },
   { name: 'Contact', href: '/contact' },
-  { name: 'Dashboard', href: '/dashboard' },
+  { name: 'Dashboard', href: '/' },
 ];
 
 export default function Header() {
@@ -30,7 +30,7 @@ export default function Header() {
           ))}
         </ul>
         {/* CTA */}
-        <Link href="/dashboard" className="hidden md:inline-block bg-accent-yellow text-primary-900 font-semibold px-5 py-2 rounded-full shadow hover:bg-primary-500 hover:text-white transition-colors ml-6 focus:outline focus:ring-2 focus:ring-accent-yellow">
+  <Link href="/" className="hidden md:inline-block bg-accent-yellow text-primary-900 font-semibold px-5 py-2 rounded-full shadow hover:bg-primary-500 hover:text-white transition-colors ml-6 focus:outline focus:ring-2 focus:ring-accent-yellow">
           Dashboard Access
         </Link>
         {/* Mobile Hamburger */}
@@ -53,7 +53,7 @@ export default function Header() {
                   </li>
                 ))}
               </ul>
-              <Link href="/dashboard" className="mt-8 bg-accent-yellow text-primary-900 font-semibold px-5 py-2 rounded-full shadow hover:bg-primary-500 hover:text-white transition-colors focus:outline focus:ring-2 focus:ring-accent-yellow text-center">
+              <Link href="/" className="mt-8 bg-accent-yellow text-primary-900 font-semibold px-5 py-2 rounded-full shadow hover:bg-primary-500 hover:text-white transition-colors focus:outline focus:ring-2 focus:ring-accent-yellow text-center">
                 Dashboard Access
               </Link>
             </div>

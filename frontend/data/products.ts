@@ -4,7 +4,7 @@ export const products: Product[] = [
   {
     id: '1',
     title: 'Atama Sense',
-    short: 'Farm Dashboard',
+  short: 'Farm Dashboard', // Path now handled by /page
     description: 'Monitor your farm in real-time with AI-powered insights and analytics.',
     price: 59,
     images: ['/images/product-laptop.png'],

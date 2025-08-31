@@ -1,0 +1,13 @@
+{
+  "/_app": "pages/_app.js",
+  "/_error": "pages/_error.js",
+  "/_document": "pages/_document.js",
+  "/about": "pages/about.html",
+  "/contact": "pages/contact.html",
+  "/drone-detection/mission-planner": "pages/drone-detection/mission-planner.html",
+  "/drone-detection/page": "pages/drone-detection/page.html",
+  "/": "pages/index.html",
+  "/page": "pages/page.html",
+  "/products": "pages/products.html",
+  "/404": "pages/404.html"
+}
