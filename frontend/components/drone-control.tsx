@@ -1,18 +1,12 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { DroneStatus, Prediction } from "@/types/drone"
-import { useToast } from "@/components/ui/use-toast"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
+import { Card, CardContent, CardHeader, CardTitle } from "./ui/card"
+import { Button } from "./ui/button"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs"
+import { DroneStatus, Prediction } from "../types/drone"
+import { useToast } from "./ui/use-toast"
+import { Select } from "./ui/select"
 
 export default function DroneControl() {
   const [isConnected, setIsConnected] = useState(false)
@@ -140,19 +134,16 @@ export default function DroneControl() {
           <div className="mt-4">
             <Select
               value={source}
-              onValueChange={(value: 'tello' | 'webcam') => {
-                setSource(value)
-                connectToDevice(value)
+              onValueChange={(value) => {
+                setSource(value as 'tello' | 'webcam')
+                connectToDevice(value as 'tello' | 'webcam')
               }}
-            >
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Select source" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="tello">Tello Drone</SelectItem>
-                <SelectItem value="webcam">Webcam</SelectItem>
-              </SelectContent>
-            </Select>
+              options={[
+                { label: 'Tello Drone', value: 'tello' },
+                { label: 'Webcam', value: 'webcam' }
+              ]}
+              className="w-[180px]"
+            />
           </div>
         </div>
       </div>
@@ -164,19 +155,16 @@ export default function DroneControl() {
       <div className="absolute top-4 right-4 flex items-center space-x-4">
         <Select
           value={source}
-          onValueChange={(value: 'tello' | 'webcam') => {
-            setSource(value)
-            connectToDevice(value)
+          onValueChange={(value) => {
+            setSource(value as 'tello' | 'webcam')
+            connectToDevice(value as 'tello' | 'webcam')
           }}
-        >
-          <SelectTrigger className="w-[180px] bg-black bg-opacity-50 text-white border-none">
-            <SelectValue placeholder="Select source" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="tello">Tello Drone</SelectItem>
-            <SelectItem value="webcam">Webcam</SelectItem>
-          </SelectContent>
-        </Select>
+          options={[
+            { label: 'Tello Drone', value: 'tello' },
+            { label: 'Webcam', value: 'webcam' }
+          ]}
+          className="w-[180px] bg-black bg-opacity-50 text-white border-none"
+        />
         <div className="bg-black bg-opacity-50 text-white px-3 py-1 rounded-full text-sm">
           {source === 'tello' ? 'Connected to Tello' : 'Using Webcam'}
         </div>
