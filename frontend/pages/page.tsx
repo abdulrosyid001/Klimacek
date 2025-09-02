@@ -465,7 +465,7 @@ export default function Dashboard() {
       <div className="min-h-screen flex w-full bg-gray-50">
         {/* Sidebar */}
         <Sidebar className="border-r border-gray-200 bg-white w-64">
-          <SidebarHeader className="border-b border-gray-200 px-4 py-3 flex justify-center sticky top-0 z-50 bg-white">
+          <SidebarHeader className="border-b border-gray-200 px-4 py-2 flex justify-center sticky top-0 z-50 bg-white">
             <img src="/images/logo.png" alt="Atamagri Logo" className="h-16 w-auto" />
           </SidebarHeader>
 
@@ -518,7 +518,7 @@ export default function Dashboard() {
               </SidebarGroupContent>
             </SidebarGroup>
 
-            <SidebarGroup className="mt-4">
+            <SidebarGroup className="mt-2">
               <SidebarGroupLabel className="px-2 text-xs font-medium text-gray-500">Stasiun Cuaca</SidebarGroupLabel>
               <SidebarGroupContent>
                 <SidebarMenu>
