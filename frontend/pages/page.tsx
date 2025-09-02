@@ -262,7 +262,7 @@ const userStations = [
 const droneData = {
   id: "tello-001",
   name: "DJI Tello",
-  status: "connected", // connected, disconnected, flying, idle
+  status: "connected",
   battery: 85,
   signal: 92,
   altitude: 0,
@@ -464,22 +464,19 @@ export default function Dashboard() {
     <SidebarProvider>
       <div className="min-h-screen flex w-full bg-gray-50">
         {/* Sidebar */}
-        <Sidebar className="border-r border-gray-200">
-          <SidebarHeader className="border-b border-gray-200 p-4">
-            <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-gradient-to-br from-green-600 to-emerald-600 rounded-full flex items-center justify-center">
+        <Sidebar className="border-r border-gray-200 bg-white w-64">
+          <SidebarHeader className="border-b border-gray-200 px-4 py-3">
+            <div className="flex items-center space-x-2">
+              <div className="w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center">
                 <Leaf className="w-5 h-5 text-white" />
               </div>
-              <div>
-                <h2 className="font-bold text-gray-900">Atamagri App</h2>
-                <p className="text-xs text-gray-500">Code: 12345</p>
-              </div>
+              <h2 className="font-semibold text-gray-900 text-base">Atamagri</h2>
             </div>
           </SidebarHeader>
 
-          <SidebarContent>
+          <SidebarContent className="px-2 py-4">
             <SidebarGroup>
-              <SidebarGroupLabel>Navigation</SidebarGroupLabel>
+              <SidebarGroupLabel className="px-2 text-xs font-medium text-gray-500">Navigasi</SidebarGroupLabel>
               <SidebarGroupContent>
                 <SidebarMenu>
                   <SidebarMenuItem>
@@ -489,12 +486,13 @@ export default function Dashboard() {
                         setSelectedStation(null)
                       }}
                       className={cn(
+                        "text-sm hover:bg-emerald-50 hover:text-emerald-600",
                         activeView === "dashboard" && !selectedStation
-                          ? "bg-primary text-white"
-                          : "bg-muted"
+                          ? "bg-emerald-100 text-emerald-600"
+                          : "text-gray-700"
                       )}
                     >
-                      <BarChart3 className="w-4 h-4" />
+                      <BarChart3 className="w-4 h-4 mr-2" />
                       Dashboard
                     </SidebarMenuButton>
                   </SidebarMenuItem>
@@ -505,16 +503,17 @@ export default function Dashboard() {
                         setSelectedStation(null)
                       }}
                       className={cn(
+                        "text-sm hover:bg-emerald-50 hover:text-emerald-600",
                         activeView === "drone"
-                          ? "bg-primary text-white"
-                          : "bg-muted"
+                          ? "bg-emerald-100 text-emerald-600"
+                          : "text-gray-700"
                       )}
                     >
-                      <Plane className="w-4 h-4" />
+                      <Plane className="w-4 h-4 mr-2" />
                       Drone Control
                       <Badge 
                         variant={droneData.status === "connected" ? "default" : "secondary"}
-                        className="ml-auto text-xs"
+                        className="ml-auto text-xs bg-emerald-500 hover:bg-emerald-600"
                       >
                         {droneData.status === "connected" ? "Online" : "Offline"}
                       </Badge>
@@ -524,8 +523,8 @@ export default function Dashboard() {
               </SidebarGroupContent>
             </SidebarGroup>
 
-            <SidebarGroup>
-              <SidebarGroupLabel>Stasiun Cuaca</SidebarGroupLabel>
+            <SidebarGroup className="mt-4">
+              <SidebarGroupLabel className="px-2 text-xs font-medium text-gray-500">Stasiun Cuaca</SidebarGroupLabel>
               <SidebarGroupContent>
                 <SidebarMenu>
                   {userStations.map((station) => (
@@ -536,9 +535,10 @@ export default function Dashboard() {
                           setActiveView("dashboard")
                         }}
                         className={cn(
+                          "text-sm hover:bg-emerald-50 hover:text-emerald-600",
                           selectedStation === station.id
-                            ? "bg-primary text-white"
-                            : "bg-muted"
+                            ? "bg-emerald-100 text-emerald-600"
+                            : "text-gray-700"
                         )}
                       >
                         <div className="flex items-center">
@@ -553,7 +553,7 @@ export default function Dashboard() {
                     </SidebarMenuItem>
                   ))}
                   <SidebarMenuItem>
-                    <SidebarMenuButton>
+                    <SidebarMenuButton className="text-sm hover:bg-emerald-50 hover:text-emerald-600 text-gray-700">
                       <PlusCircle className="w-4 h-4 mr-2" />
                       Tambah Stasiun
                     </SidebarMenuButton>
@@ -563,25 +563,24 @@ export default function Dashboard() {
             </SidebarGroup>
           </SidebarContent>
 
-          <SidebarFooter className="border-t border-gray-200 p-4">
+          <SidebarFooter className="border-t border-gray-200 px-4 py-3">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="w-full justify-start">
+                <Button variant="ghost" className="w-full justify-start text-sm text-gray-700 hover:text-emerald-600 hover:bg-emerald-50">
                   <User className="w-4 h-4 mr-2" />
-                  User Settings
-                  <ChevronDown className="w-4 h-4 ml-auto" />
+                  Pengaturan
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="start" className="w-56">
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuLabel>Akun</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => setActiveView("settings")}>
                   <Settings className="w-4 h-4 mr-2" />
-                  Account Settings
+                  Pengaturan Akun
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => setActiveView("calibration")}>
                   <Settings className="w-4 h-4 mr-2" />
-                  Sensor Calibration
+                  Kalibrasi Sensor
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
