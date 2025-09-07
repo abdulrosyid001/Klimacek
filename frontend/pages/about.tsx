@@ -14,14 +14,14 @@ import { testimonials } from '../data/testimonials';
 
 const marqueeText = ['Agriculture', 'AI', 'IoT', 'Vegetables'];
 const awards = [
-  { photo: '/images/award1.png', position: 'Juara 1', competition: 'AgriTech National 2024' },
-  { photo: '/images/award2.png', position: 'Juara 2', competition: 'Smart Farming Expo' },
-  { photo: '/images/award3.png', position: 'Juara 1', competition: 'IoT Challenge 2023' },
-  { photo: '/images/award4.png', position: 'Juara 3', competition: 'AI for Agriculture' },
-  { photo: '/images/award5.png', position: 'Juara Harapan', competition: 'Startup Incubation' },
-  { photo: '/images/award6.png', position: 'Finalis', competition: 'Tech Innovator' },
-  { photo: '/images/award7.png', position: 'Juara 2', competition: 'Green Future Award' },
-  { photo: '/images/award8.png', position: 'Juara 1', competition: 'Digital Farming Fest' },
+  { photo: '/images/award1.png', position: '1st Place', competition: 'elevAte Indonesia Hackathon' },
+  { photo: '/images/award2.png', position: '1st Place', competition: 'International Walisongo Competition' },
+  { photo: '/images/award3.png', position: '1st Place', competition: 'Creativity and Innovation Competition (KRENOVA)' },
+  { photo: '/images/award4.png', position: 'Finalist', competition: 'Indonesia AI Innovation Challenge' },
+  { photo: '/images/award5.png', position: 'Finalist', competition: 'SMESTA x KemenKop UKM' },
+  { photo: '/images/award6.png', position: 'Top 5', competition: 'TDC Business Competition' },
+  { photo: '/images/award7.png', position: 'Top 30', competition: 'Pertamuda (Pertamina Young Entrepreneurs)' },
+  { photo: '/images/award8.png', position: 'etc.', competition: '' },
 ];
 
 export default function About() {
