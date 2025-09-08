@@ -27,7 +27,7 @@ export default function Footer() {
               <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a2.994 2.994 0 0 0-2.112-2.112C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.386.574A2.994 2.994 0 0 0 .502 6.186C0 8.072 0 12 0 12s0 3.928.502 5.814a2.994 2.994 0 0 0 2.112 2.112C4.5 20.5 12 20.5 12 20.5s7.5 0 9.386-.574a2.994 2.994 0 0 0 2.112-2.112C24 15.928 24 12 24 12s0-3.928-.502-5.814zM9.75 15.5v-7l6.5 3.5-6.5 3.5z"/></svg>
             </a>
           </div>
-          <p className="text-neutral-300 text-xs mt-4">&copy; {new Date().getFullYear()} Atama Agri. All rights reserved.</p>
+          <p className="text-neutral-300 text-xs mt-4">&copy; {new Date().getFullYear()} Atamagri. All rights reserved.</p>
         </div>
 
         {/* Navigation */}
