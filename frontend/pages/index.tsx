@@ -5,6 +5,7 @@ import Footer from '../components/Footer';
 import Hero from '../components/Hero';
 import FeatureCard from '../components/FeatureCard';
 import ServiceCard from '../components/ServiceCard';
+import BestAgriculture from '../components/BestAgriculture';
 import ProductCard from '../components/ProductCard';
 import PricingCard from '../components/PricingCard';
 import TestimonialCard from '../components/TestimonialCard';
@@ -115,15 +116,8 @@ export default function Home() {
         </section>
         {/* 5. Hiasan teks marquee */}
         <Marquee text={marqueeText} speed={30} direction="left" />
-        {/* 6. Best Agriculture Services */}
-        <section className="max-w-7xl mx-auto px-4 py-12">
-          <h2 className="font-serif text-3xl font-bold text-primary-900 mb-8 text-center">Best Agriculture Services</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <ServiceCard title="Atama Climate" description="Weather station for hyperlocal climate data." image="/images/product-sensor.png" />
-            <ServiceCard title="Atama Vis" description="Drone system for aerial crop monitoring." image="/images/product-drone.png" />
-            <ServiceCard title="Atama Sense" description="Farm dashboard for real-time insights." image="/images/product-laptop.png" />
-          </div>
-        </section>
+  {/* 6. Best Agriculture Services */}
+  <BestAgriculture />
         {/* 7. Solutions for Every Scale */}
         <Solutions items={solutions} />
         {/* 8. Gambar random pertanian bergeser otomatis (carousel) */}

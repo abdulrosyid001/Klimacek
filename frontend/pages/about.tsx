@@ -1,3 +1,4 @@
+import BestAgriculture from '../components/BestAgriculture';
 import React from 'react';
 import Head from 'next/head';
 import Header from '../components/Header';
@@ -43,15 +44,8 @@ export default function About() {
         </section>
         {/* 3. Hiasan teks marquee */}
         <Marquee text={marqueeText} speed={30} direction="left" />
-        {/* 4. Best Agriculture Services */}
-        <section className="max-w-7xl mx-auto px-4 py-12">
-          <h2 className="font-serif text-3xl font-bold text-primary-900 mb-8 text-center">Best Agriculture Services</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <StatsBox label="Atama Climate" value="Weather Station" accent="yellow" />
-            <StatsBox label="Atama Vis" value="Drone System" accent="green" />
-            <StatsBox label="Atama Sense" value="Farm Dashboard" accent="yellow" />
-          </div>
-        </section>
+  {/* 4. Best Agriculture Services */}
+  <BestAgriculture />
         {/* 5. Agriculture Matters to the Future of Development */}
         <AgricultureMatters
           title="Agriculture Matters to the Future of Development"
