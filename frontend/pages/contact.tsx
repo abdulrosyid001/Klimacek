@@ -23,7 +23,7 @@ export default function Contact() {
         <section className="max-w-4xl mx-auto px-4 flex flex-col md:flex-row gap-8 mb-12 justify-center items-center text-center">
           <ContactCard icon={Mail} title="Mail Us" value="info@atamagri.com" href="mailto:info@atamagri.com" />
           <ContactCard icon={Phone} title="Call Us" value="+62 812-3456-789" href="tel:+628123456789" />
-          <ContactCard icon={MapPin} title="Our Location" value="Bandung, Indonesia" />
+          <ContactCard icon={MapPin} title="Our Location" value="Karanganyar, Jawa Tengah, Indonesia" />
         </section>
         {/* 3. Section "Have any questions? Get in touch" */}
         <section className="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-10 items-stretch mb-12">
