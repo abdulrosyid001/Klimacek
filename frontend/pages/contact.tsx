@@ -21,7 +21,7 @@ export default function Contact() {
         <ContactHero title="Contact Us" backgroundImage="/images/contact-bg.png" subtitle="We'd love to hear from you!" />
         {/* 2. Kontak yang dapat dihubungi */}
         <section className="max-w-4xl mx-auto px-4 flex flex-col md:flex-row gap-8 mb-12 justify-center items-center text-center">
-          <ContactCard icon={Mail} title="Mail Us" value="info@atamagri.com" href="mailto:info@atamagri.com" />
+          <ContactCard icon={Mail} title="Mail Us" value="atamagriacc@gmail.com" href="mailto:atamagriacc@gmail.com" />
           <ContactCard icon={Phone} title="Call Us" value="+62 812-3456-789" href="tel:+628123456789" />
           <ContactCard icon={MapPin} title="Our Location" value="Jawa Tengah, Indonesia" />
         </section>

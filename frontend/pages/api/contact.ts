@@ -26,7 +26,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     await transporter.sendMail({
       from: `"${name}" <${email}>`,
-      to: 'info@atamagri.com',
+      to: 'atamagriacc@gmail.com',
       subject: subject,
       text: `Nama: ${name}\nEmail: ${email}\nPhone: ${phone || '-'}\n\n${message}`,
       html: `<p><strong>Nama:</strong> ${name}</p><p><strong>Email:</strong> ${email}</p><p><strong>Phone:</strong> ${phone || '-'}</p><p><strong>Pesan:</strong><br/>${message.replace(/\n/g, '<br/>')}</p>`,
