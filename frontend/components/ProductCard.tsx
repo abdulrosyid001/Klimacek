@@ -22,6 +22,13 @@ export default function ProductCard({ product }: ProductCardProps) {
       {product.price && (
         <div className="bg-accent-yellow text-primary-900 font-bold rounded px-3 py-1 mt-2">${product.price}</div>
       )}
+      <a
+        href={`/checkout/${product.id}`}
+        className="mt-4 w-full bg-green-600 text-white rounded-full py-2 font-semibold hover:bg-green-700 transition text-center"
+        style={{ display: 'block' }}
+      >
+        Checkout
+      </a>
     </div>
   );
 }
