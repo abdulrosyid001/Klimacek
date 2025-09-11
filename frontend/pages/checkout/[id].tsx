@@ -9,7 +9,7 @@ import Link from 'next/link';
 export default function CheckoutProduct() {
   const router = useRouter();
   const { id } = router.query;
-  const product = products.find((p) => p.id === id);
+  const product = products.find((p) => String(p.id) === String(id));
   const [form, setForm] = useState({ name: '', email: '', address: '', payment: '' });
 
   if (!product) {

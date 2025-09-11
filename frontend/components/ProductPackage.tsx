@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 
 interface ProductPackageProps {
   packages: {
@@ -32,12 +33,12 @@ const ProductPackage: React.FC<ProductPackageProps> = ({ packages }) => (
               ))}
             </ul>
             {pkg.best && <div className="text-xs font-bold text-primary-700">Best Value</div>}
-            <a
-              href={`/checkout/package/${encodeURIComponent(pkg.title.replace(/\s+/g, '-'))}`}
+            <Link
+              href={`/checkout/package/${pkg.title.toLowerCase().replace(/\s+/g, '-')}`}
               className="mt-4 w-full bg-green-600 text-white rounded-full py-2 font-semibold hover:bg-green-700 transition text-center block"
             >
               Checkout
-            </a>
+            </Link>
           </div>
         </div>
       ))}

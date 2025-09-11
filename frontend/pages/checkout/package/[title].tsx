@@ -35,7 +35,8 @@ const packages = [
 export default function CheckoutPackage() {
   const router = useRouter();
   const { title } = router.query;
-  const pkg = packages.find((p) => p.title.replace(/\s+/g, '-').toLowerCase() === String(title).replace(/\s+/g, '-').toLowerCase());
+  const kebab = (str) => str.toLowerCase().replace(/\s+/g, '-');
+  const pkg = packages.find((p) => kebab(p.title) === String(title));
   const [form, setForm] = useState({ name: '', email: '', address: '', payment: '' });
 
   if (!pkg) {
