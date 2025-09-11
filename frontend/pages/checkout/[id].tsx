@@ -34,9 +34,11 @@ export default function CheckoutProduct() {
       <main className="bg-beige min-h-screen py-12 px-4">
         <div className="max-w-2xl mx-auto bg-white rounded-2xl shadow p-8">
           <Link href="/products" className="text-primary-700 text-sm mb-4 inline-block hover:underline">&larr; Back to Products</Link>
-          <h1 className="font-serif text-2xl font-bold text-primary-900 mb-2">Checkout: {product.title}</h1>
-          <img src={product.images[0]} alt={product.title} className="w-32 h-32 object-contain rounded-xl mb-4" />
-          <div className="mb-4 text-primary-700">{product.short}</div>
+          <h1 className="font-serif text-2xl font-bold text-primary-900 mb-4 text-center">Checkout: {product.title}</h1>
+          <div className="flex justify-center mb-4">
+            <img src={product.images[0]} alt={product.title} className="w-32 h-32 object-contain rounded-xl mx-auto block" />
+          </div>
+          <div className="mb-4 text-primary-700 text-center">{product.short}</div>
           <form className="space-y-4">
             <input type="text" placeholder="Name" className="w-full border rounded px-3 py-2" value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} />
             <input type="email" placeholder="Email" className="w-full border rounded px-3 py-2" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} />
