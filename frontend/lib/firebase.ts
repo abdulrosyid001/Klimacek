@@ -1,6 +1,13 @@
 import { initializeApp } from 'firebase/app';
 import { getDatabase } from 'firebase/database';
 
+// Debug environment variables
+console.log('Environment check:', {
+  hasApiKey: !!process.env.FIREBASE_API_KEY,
+  hasProjectId: !!process.env.FIREBASE_PROJECT_ID,
+  hasDatabaseURL: !!process.env.FIREBASE_DATABASE_URL
+});
+
 const firebaseConfig = {
   apiKey: process.env.FIREBASE_API_KEY,
   authDomain: process.env.FIREBASE_AUTH_DOMAIN,

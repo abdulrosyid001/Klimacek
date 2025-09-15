@@ -16,9 +16,17 @@ interface SensorData {
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  // Debug logging
+  console.log('API Request:', { method: req.method, url: req.url });
+
   if (req.method !== 'POST') {
     res.setHeader('Allow', ['POST']);
-    return res.status(405).json({ success: false, error: 'Method Not Allowed' });
+    return res.status(405).json({
+      success: false,
+      error: 'Method Not Allowed',
+      received_method: req.method,
+      expected_method: 'POST'
+    });
   }
 
   try {
