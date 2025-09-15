@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { db } from '../../../lib/firebase';
-import { ref, push, serverTimestamp } from 'firebase/database';
+import { ref, push, serverTimestamp, get, query, orderByChild, limitToLast } from 'firebase/database';
 
 interface SensorData {
   device_id: string;
@@ -27,16 +27,70 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     });
   }
 
-  if (req.method !== 'POST') {
-    res.setHeader('Allow', ['POST']);
+  if (req.method === 'GET') {
+    return handleGetRequest(req, res);
+  } else if (req.method === 'POST') {
+    return handlePostRequest(req, res);
+  } else {
+    res.setHeader('Allow', ['GET', 'POST']);
     return res.status(405).json({
       success: false,
       error: 'Method Not Allowed',
       received_method: req.method,
-      expected_method: 'POST'
+      expected_methods: ['GET', 'POST']
     });
   }
+}
 
+async function handleGetRequest(req: NextApiRequest, res: NextApiResponse) {
+  try {
+    const { device_id, limit = '50' } = req.query;
+    const limitNum = parseInt(limit as string) || 50;
+
+    const sensorDataRef = ref(db, 'sensor_data');
+    const snapshot = await get(sensorDataRef);
+    const data: any[] = [];
+
+    if (snapshot.exists()) {
+      snapshot.forEach((childSnapshot) => {
+        const record = childSnapshot.val();
+        // Filter by device_id if specified
+        if (!device_id || record.device_id === device_id) {
+          data.push({
+            id: childSnapshot.key,
+            ...record
+          });
+        }
+      });
+    }
+
+    // Sort by received_at descending (most recent first)
+    data.sort((a, b) => {
+      const timeA = new Date(a.received_at || 0).getTime();
+      const timeB = new Date(b.received_at || 0).getTime();
+      return timeB - timeA;
+    });
+
+    // Apply limit after sorting
+    const limitedData = data.slice(0, limitNum);
+
+    return res.status(200).json({
+      success: true,
+      data: limitedData,
+      count: limitedData.length,
+      total: data.length
+    });
+
+  } catch (error: any) {
+    console.error('Error retrieving sensor data:', error);
+    return res.status(500).json({
+      success: false,
+      error: 'Internal server error'
+    });
+  }
+}
+
+async function handlePostRequest(req: NextApiRequest, res: NextApiResponse) {
   try {
     const data: SensorData = req.body;
 
