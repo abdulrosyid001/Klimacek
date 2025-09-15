@@ -19,6 +19,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   // Debug logging
   console.log('API Request:', { method: req.method, url: req.url });
 
+  // Check if Firebase is configured
+  if (!db) {
+    return res.status(503).json({
+      success: false,
+      error: 'Firebase not configured - service unavailable'
+    });
+  }
+
   if (req.method !== 'POST') {
     res.setHeader('Allow', ['POST']);
     return res.status(405).json({

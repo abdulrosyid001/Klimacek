@@ -24,6 +24,14 @@ export default function IoTDashboard() {
   const [connected, setConnected] = useState(false);
 
   useEffect(() => {
+    // Only run if Firebase is properly configured
+    if (!db) {
+      console.warn('Firebase not configured - unable to connect to database');
+      setLoading(false);
+      setConnected(false);
+      return;
+    }
+
     const sensorDataRef = ref(db, 'sensor_data');
 
     const unsubscribe = onValue(sensorDataRef, (snapshot) => {
