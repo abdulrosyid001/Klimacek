@@ -5,7 +5,7 @@ const http = require('http');
 
 // Configuration
 const hostname = 'localhost'; // Development - Ganti dengan 'www.atamagri.app' untuk production
-const port = 3000; // Next.js dev server port (443 untuk production HTTPS)
+const port = 3002; // Next.js dev server port (443 untuk production HTTPS)
 const path = '/api/iot/sensor-data';
 
 // Production configuration (uncomment untuk test production)
