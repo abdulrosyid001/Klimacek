@@ -18,14 +18,15 @@ Copy environment variables dari `.env.local.example` ke `.env.local`
 
 ### Production Variables
 ```env
-FIREBASE_API_KEY=AIzaSyDYJpxwibPgJiH418xvjrLJXv_W6opaNbo
-FIREBASE_AUTH_DOMAIN=atamagri-iot.firebaseapp.com
-FIREBASE_DATABASE_URL=https://atamagri-iot-default-rtdb.asia-southeast1.firebasedatabase.app
-FIREBASE_PROJECT_ID=atamagri-iot
-FIREBASE_STORAGE_BUCKET=atamagri-iot.firebasestorage.app
-FIREBASE_MESSAGING_SENDER_ID=745512120451
-FIREBASE_APP_ID=1:745512120451:web:6cfdd1aab20747f675ebb6
-IOT_SECRET=your-production-secret
+# These are set in Vercel Dashboard Environment Variables
+FIREBASE_API_KEY=<configured-in-vercel>
+FIREBASE_AUTH_DOMAIN=<configured-in-vercel>
+FIREBASE_DATABASE_URL=<configured-in-vercel>
+FIREBASE_PROJECT_ID=<configured-in-vercel>
+FIREBASE_STORAGE_BUCKET=<configured-in-vercel>
+FIREBASE_MESSAGING_SENDER_ID=<configured-in-vercel>
+FIREBASE_APP_ID=<configured-in-vercel>
+IOT_SECRET=<configured-in-vercel>
 ```
 
 ### ESP32 Production Config
