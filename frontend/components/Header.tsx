@@ -6,6 +6,7 @@ const navLinks = [
   { name: 'Home', href: '/' },
   { name: 'About', href: '/about' },
   { name: 'Products', href: '/products' },
+  { name: 'IoT Monitor', href: '/iot-dashboard' },
   { name: 'Contact', href: '/contact' },
 ];
 
