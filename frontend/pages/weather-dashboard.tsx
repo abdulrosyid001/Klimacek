@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import { db } from '../lib/firebase';
 import { ref, onValue, query, orderByChild, limitToLast } from 'firebase/database';
 import { LineChart, Line, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
@@ -6,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../co
 import { Badge } from '../components/ui/badge';
 import { Button } from '../components/ui/button';
 import dynamic from 'next/dynamic';
+import ProtectedRoute from '../components/ProtectedRoute';
 
 const DroneControl = dynamic(() => import('../components/drone-control'), {
   ssr: false
@@ -23,7 +25,9 @@ import {
   Plane,
   Radio,
   Target,
-  CircuitBoard
+  CircuitBoard,
+  Home,
+  ArrowLeft
 } from 'lucide-react';
 
 interface SensorData {
@@ -43,6 +47,7 @@ interface SensorData {
 }
 
 export default function WeatherDashboard() {
+  const router = useRouter();
   const [sensorData, setSensorData] = useState<SensorData[]>([]);
   const [loading, setLoading] = useState(true);
   const [connected, setConnected] = useState(false);
@@ -153,16 +158,19 @@ export default function WeatherDashboard() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-8">
-        <div className="flex items-center justify-center h-screen">
-          <div className="text-xl">Loading weather data...</div>
+      <ProtectedRoute>
+        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-8">
+          <div className="flex items-center justify-center h-screen">
+            <div className="text-xl">Loading weather data...</div>
+          </div>
         </div>
-      </div>
+      </ProtectedRoute>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+    <ProtectedRoute>
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="bg-white rounded-2xl shadow-lg p-6 mb-6">
@@ -178,6 +186,15 @@ export default function WeatherDashboard() {
               </div>
             </div>
             <div className="flex gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => router.push('/')}
+                className="flex items-center gap-2"
+              >
+                <ArrowLeft className="w-4 h-4" />
+                <span className="hidden sm:inline">Back to Home</span>
+              </Button>
               <Button variant="outline" size="sm" onClick={() => window.location.reload()}>
                 <RefreshCw className="w-4 h-4 mr-2" />
                 Refresh
@@ -496,5 +513,6 @@ export default function WeatherDashboard() {
         </div>
       </div>
     </div>
+    </ProtectedRoute>
   );
 }

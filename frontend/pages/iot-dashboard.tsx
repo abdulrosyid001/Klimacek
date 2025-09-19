@@ -3,6 +3,7 @@ import { db } from '../lib/firebase';
 import { ref, onValue, query, orderByChild, limitToLast } from 'firebase/database';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
+import ProtectedRoute from '../components/ProtectedRoute';
 
 interface SensorData {
   id: string;
@@ -97,17 +98,20 @@ export default function IoTDashboard() {
 
   if (loading) {
     return (
-      <div className="p-8">
-        <h1 className="text-3xl font-bold mb-6">IoT Dashboard</h1>
-        <div className="flex items-center justify-center h-64">
-          <div className="text-lg">Loading sensor data...</div>
+      <ProtectedRoute>
+        <div className="p-8">
+          <h1 className="text-3xl font-bold mb-6">IoT Dashboard</h1>
+          <div className="flex items-center justify-center h-64">
+            <div className="text-lg">Loading sensor data...</div>
+          </div>
         </div>
-      </div>
+      </ProtectedRoute>
     );
   }
 
   return (
-    <div className="p-8">
+    <ProtectedRoute>
+      <div className="p-8">
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-3xl font-bold">IoT Dashboard</h1>
         <div className="flex items-center gap-2">
@@ -207,5 +211,6 @@ export default function IoTDashboard() {
         </>
       )}
     </div>
+    </ProtectedRoute>
   );
 }
