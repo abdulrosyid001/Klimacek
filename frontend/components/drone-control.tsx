@@ -29,12 +29,22 @@ export default function DroneControl() {
     try {
       setIsLoading(true)
       setError(null)
-      
+
       // Stop any existing connection
-      await fetch('http://localhost:8000/stop').catch(console.error)
-      
+      await fetch('http://localhost:8000/stop').catch(() => {})
+
       // Try to connect to selected source
-      const response = await fetch(`http://localhost:8000/start?source=${selectedSource}`)
+      const response = await fetch(`http://localhost:8000/start?source=${selectedSource}`, {
+        method: 'GET',
+        mode: 'cors'
+      }).catch((err) => {
+        throw new Error('Cannot connect to device. Please check your connection.')
+      })
+
+      if (!response) {
+        throw new Error('Connection failed')
+      }
+
       if (!response.ok) {
         throw new Error(`Failed to connect to ${selectedSource}`)
       }
@@ -48,9 +58,10 @@ export default function DroneControl() {
         battery: 100,
         signal: 100
       }))
-    } catch (err) {
+    } catch (err: any) {
       console.error(`Connection error:`, err)
-      setError(`Failed to connect to ${selectedSource}`)
+      const errorMessage = err.message || `Failed to connect to ${selectedSource}`
+      setError(errorMessage)
       setIsConnected(false)
       setStatus((prev: DroneStatus) => ({
         ...prev,
@@ -63,14 +74,18 @@ export default function DroneControl() {
   }
 
   useEffect(() => {
-    // Initial connection
-    connectToDevice(source)
+    // Don't auto-connect on mount
+    setIsLoading(false)
+    setError(null)
 
     return () => {
       // Cleanup on unmount
-      fetch('http://localhost:8000/stop').catch(console.error)
+      fetch('http://localhost:8000/stop').catch(() => {})
+      if (wsRef.current) {
+        wsRef.current.close()
+      }
     }
-  }, [source])
+  }, [])
 
   useEffect(() => {
     if (!isConnected) return
@@ -120,35 +135,65 @@ export default function DroneControl() {
     )
   }
 
-  if (error) {
+  if (!isConnected) {
     return (
-      <div className="flex items-center justify-center h-full">
-        <div className="text-center">
-          <div className="text-red-500 mb-4">
-            <svg className="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-            </svg>
+      <div className="space-y-4">
+        <div className="bg-gray-50 p-6 rounded-lg">
+          <div className="text-center">
+            <div className={`${error ? 'text-amber-500' : 'text-gray-400'} mb-4`}>
+              <svg className="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                  d={error
+                    ? "M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                    : "M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
+                  }
+                />
+              </svg>
+            </div>
+            <p className={`font-semibold ${error ? 'text-amber-700' : 'text-gray-700'}`}>
+              {error || 'Select a device to connect'}
+            </p>
           </div>
-          <p className="text-red-500 font-semibold">{error}</p>
-          <p className="text-gray-600 mt-2">Please check your connection and try again</p>
-          <div className="mt-4">
+
+          <div className="mt-6 space-y-3 max-w-xs mx-auto">
             <Select
               value={source}
-              onValueChange={(value) => {
-                setSource(value as 'tello' | 'webcam')
-                connectToDevice(value as 'tello' | 'webcam')
-              }}
+              onValueChange={(value) => setSource(value as 'tello' | 'webcam')}
             >
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Pilih perangkat" />
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select device" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="tello">Tello Drone</SelectItem>
                 <SelectItem value="webcam">Webcam</SelectItem>
+                <SelectItem value="tello">Tello Drone</SelectItem>
               </SelectContent>
             </Select>
+
+            <Button
+              onClick={() => connectToDevice(source)}
+              className="w-full bg-purple-600 hover:bg-purple-700"
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <span className="flex items-center">
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                  Connecting...
+                </span>
+              ) : (
+                <span>Connect to {source === 'tello' ? 'Tello Drone' : 'Webcam'}</span>
+              )}
+            </Button>
           </div>
         </div>
+
+        <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg">
+          <h4 className="font-semibold text-blue-900 mb-2">Device Information</h4>
+          <div className="space-y-1 text-sm text-blue-800">
+            <p>• <strong>Webcam:</strong> Uses your computer's camera for testing</p>
+            <p>• <strong>Tello Drone:</strong> Connects to DJI Tello drone via WiFi</p>
+          </div>
+        </div>
+
       </div>
     )
   }

@@ -7,15 +7,17 @@ import { Badge } from '../components/ui/badge';
 interface SensorData {
   id: string;
   device_id: string;
-  temperature?: number;
-  humidity?: number;
-  soil_moisture?: number;
-  ph?: number;
-  nitrogen?: number;
-  phosphorus?: number;
-  potassium?: number;
-  timestamp: any;
-  received_at: string;
+  timestamp: string;
+  wind_m_s?: number;
+  wind_kmh?: number;
+  rainrate_mm_h?: number;
+  temperature_C?: number;
+  humidity_?: number;
+  light_lux?: number;
+  sol_voltage_V?: number;
+  sol_current_mA?: number;
+  sol_power_W?: number;
+  received_at?: string;
 }
 
 export default function IoTDashboard() {
@@ -46,10 +48,10 @@ export default function IoTDashboard() {
           } as SensorData);
         });
 
-        // Sort by received_at descending
+        // Sort by timestamp or received_at descending
         data.sort((a, b) => {
-          const timeA = new Date(a.received_at || 0).getTime();
-          const timeB = new Date(b.received_at || 0).getTime();
+          const timeA = new Date(a.timestamp || a.received_at || 0).getTime();
+          const timeB = new Date(b.timestamp || a.received_at || 0).getTime();
           return timeB - timeA;
         });
       }
@@ -80,11 +82,12 @@ export default function IoTDashboard() {
     return value !== undefined ? `${value.toFixed(1)}${unit}` : 'N/A';
   };
 
-  const getStatusColor = (received_at: string) => {
-    if (!received_at) return 'bg-gray-500';
+  const getStatusColor = (timestamp: string | undefined, received_at: string | undefined) => {
+    const timeStr = timestamp || received_at;
+    if (!timeStr) return 'bg-gray-500';
 
     const now = new Date().getTime();
-    const dataTime = new Date(received_at).getTime();
+    const dataTime = new Date(timeStr).getTime();
     const diffMinutes = (now - dataTime) / (1000 * 60);
 
     if (diffMinutes < 2) return 'bg-green-500';
@@ -133,24 +136,25 @@ export default function IoTDashboard() {
                 <CardHeader className="pb-2">
                   <div className="flex items-center justify-between">
                     <CardTitle className="text-lg">{data.device_id}</CardTitle>
-                    <div className={`w-2 h-2 rounded-full ${getStatusColor(data.received_at)}`}></div>
+                    <div className={`w-2 h-2 rounded-full ${getStatusColor(data.timestamp, data.received_at)}`}></div>
                   </div>
                   <p className="text-sm text-gray-500">
-                    {data.received_at ? new Date(data.received_at).toLocaleString() : 'No timestamp'}
+                    {(data.timestamp || data.received_at) ? new Date(data.timestamp || data.received_at || '').toLocaleString() : 'No timestamp'}
                   </p>
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-2 gap-4 text-sm">
                     <div>
-                      <div className="font-medium text-red-600">🌡️ {formatValue(data.temperature, '°C')}</div>
-                      <div className="font-medium text-blue-600">💧 {formatValue(data.humidity, '%')}</div>
-                      <div className="font-medium text-brown-600">🌱 {formatValue(data.soil_moisture, '%')}</div>
-                      <div className="font-medium text-purple-600">📊 pH {formatValue(data.ph, '')}</div>
+                      <div className="font-medium text-red-600">🌡️ {formatValue(data.temperature_C, '°C')}</div>
+                      <div className="font-medium text-blue-600">💧 {formatValue(data.humidity_, '%')}</div>
+                      <div className="font-medium text-yellow-600">☀️ {formatValue(data.light_lux, ' lux')}</div>
+                      <div className="font-medium text-gray-600">💨 {formatValue(data.wind_kmh, ' km/h')}</div>
+                      <div className="font-medium text-blue-500">🌧️ {formatValue(data.rainrate_mm_h, ' mm/h')}</div>
                     </div>
                     <div>
-                      <div className="font-medium text-green-600">🔹 N: {formatValue(data.nitrogen, ' ppm')}</div>
-                      <div className="font-medium text-orange-600">🔸 P: {formatValue(data.phosphorus, ' ppm')}</div>
-                      <div className="font-medium text-yellow-600">🔹 K: {formatValue(data.potassium, ' ppm')}</div>
+                      <div className="font-medium text-orange-600">⚡ {formatValue(data.sol_voltage_V, 'V')}</div>
+                      <div className="font-medium text-purple-600">🔌 {formatValue(data.sol_current_mA, ' mA')}</div>
+                      <div className="font-medium text-green-600">💡 {formatValue(data.sol_power_W, 'W')}</div>
                     </div>
                   </div>
                 </CardContent>
@@ -171,9 +175,10 @@ export default function IoTDashboard() {
                       <th className="text-left p-2">Device</th>
                       <th className="text-left p-2">Temp</th>
                       <th className="text-left p-2">Humidity</th>
-                      <th className="text-left p-2">Soil</th>
-                      <th className="text-left p-2">pH</th>
-                      <th className="text-left p-2">N-P-K</th>
+                      <th className="text-left p-2">Light</th>
+                      <th className="text-left p-2">Wind</th>
+                      <th className="text-left p-2">Rain</th>
+                      <th className="text-left p-2">Solar</th>
                       <th className="text-left p-2">Time</th>
                     </tr>
                   </thead>
@@ -183,18 +188,14 @@ export default function IoTDashboard() {
                         <td className="p-2">
                           <Badge variant="outline">{data.device_id}</Badge>
                         </td>
-                        <td className="p-2">{formatValue(data.temperature, '°C')}</td>
-                        <td className="p-2">{formatValue(data.humidity, '%')}</td>
-                        <td className="p-2">{formatValue(data.soil_moisture, '%')}</td>
-                        <td className="p-2">{formatValue(data.ph, '')}</td>
-                        <td className="p-2">
-                          {data.nitrogen && data.phosphorus && data.potassium
-                            ? `${data.nitrogen.toFixed(0)}-${data.phosphorus.toFixed(0)}-${data.potassium.toFixed(0)}`
-                            : 'N/A'
-                          }
-                        </td>
+                        <td className="p-2">{formatValue(data.temperature_C, '°C')}</td>
+                        <td className="p-2">{formatValue(data.humidity_, '%')}</td>
+                        <td className="p-2">{formatValue(data.light_lux, ' lux')}</td>
+                        <td className="p-2">{formatValue(data.wind_kmh, ' km/h')}</td>
+                        <td className="p-2">{formatValue(data.rainrate_mm_h, ' mm/h')}</td>
+                        <td className="p-2">{formatValue(data.sol_power_W, 'W')}</td>
                         <td className="p-2 text-gray-500">
-                          {data.received_at ? new Date(data.received_at).toLocaleTimeString() : 'N/A'}
+                          {(data.timestamp || data.received_at) ? new Date(data.timestamp || data.received_at || '').toLocaleTimeString() : 'N/A'}
                         </td>
                       </tr>
                     ))}

@@ -4,14 +4,16 @@ import { ref, push, serverTimestamp, get, query, orderByChild, limitToLast } fro
 
 interface SensorData {
   device_id: string;
-  temperature?: number;
-  humidity?: number;
-  soil_moisture?: number;
-  ph?: number;
-  nitrogen?: number;
-  phosphorus?: number;
-  potassium?: number;
-  timestamp?: any;
+  timestamp: string;
+  wind_m_s?: number;
+  wind_kmh?: number;
+  rainrate_mm_h?: number;
+  temperature_C?: number;
+  humidity_?: number;
+  light_lux?: number;
+  sol_voltage_V?: number;
+  sol_current_mA?: number;
+  sol_power_W?: number;
   signature?: string;
 }
 
@@ -111,10 +113,10 @@ async function handlePostRequest(req: NextApiRequest, res: NextApiResponse) {
       });
     }
 
-    // Tambah timestamp server
+    // Tambah timestamp server - keep original timestamp from ESP32
     const sensorRecord = {
       ...data,
-      timestamp: serverTimestamp(),
+      server_timestamp: serverTimestamp(),
       received_at: new Date().toISOString()
     };
 
