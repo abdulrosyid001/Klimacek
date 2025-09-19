@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Home, Plane, Settings, LogOut, Shield, Plus, CloudRain, Wind, Sun, Thermometer, Droplets, Battery, Activity, RefreshCw, MapPin, Wifi, WifiOff, Edit2, Trash2, Save, X, User, Mail, Phone, Lock } from 'lucide-react';
+import { Home, Plane, Settings, LogOut, Shield, Plus, CloudRain, Wind, Sun, Thermometer, Droplets, Battery, Activity, RefreshCw, MapPin, Wifi, WifiOff, Edit2, Trash2, Save, X, User, Mail, Phone, Lock, CheckCircle, AlertCircle } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import ProtectedRoute from '../components/ProtectedRoute';
 import { useAuth } from '../lib/auth-context';
+import { getAuth, updateProfile, updatePassword, sendEmailVerification } from 'firebase/auth';
 import { db } from '../lib/firebase';
 import { ref, onValue, query, limitToLast, set, remove, push } from 'firebase/database';
 import { LineChart, Line, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
@@ -45,6 +46,8 @@ interface SensorData {
 
 export default function Dashboard() {
   const { logout, isAdmin, user } = useAuth();
+  const [emailVerified, setEmailVerified] = useState(user?.emailVerified || false);
+  const [profileComplete, setProfileComplete] = useState(false);
   const [active, setActive] = useState<string>('dashboard');
   const router = useRouter();
   const [puzzleVerified, setPuzzleVerified] = useState(false);
@@ -63,13 +66,36 @@ export default function Dashboard() {
 
   // User settings
   const [userProfile, setUserProfile] = useState({
-    displayName: user?.displayName || '',
+    displayName: '',
     email: user?.email || '',
     phone: '',
     newPassword: '',
     confirmPassword: ''
   });
   const [settingsSaved, setSettingsSaved] = useState(false);
+  const [settingsError, setSettingsError] = useState('');
+  const [verificationSent, setVerificationSent] = useState(false);
+
+  // Check user profile completion and email verification
+  useEffect(() => {
+    if (user) {
+      setEmailVerified(user.emailVerified);
+      // Load user profile from Firebase
+      const userRef = ref(db, `users/${user.uid}`);
+      onValue(userRef, (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+          setUserProfile(prev => ({
+            ...prev,
+            displayName: data.displayName || user.displayName || '',
+            phone: data.phone || ''
+          }));
+          // Check if profile is complete
+          setProfileComplete(!!(data.displayName && data.phone && user.emailVerified));
+        }
+      });
+    }
+  }, [user]);
 
   // Load stations from Firebase
   useEffect(() => {
@@ -85,12 +111,8 @@ export default function Dashboard() {
         }));
         setStations(stationsList);
       } else {
-        // Default stations if none exist
-        setStations([
-          { id: 'north-field', name: 'North Field', location: 'Field A1', status: 'active' },
-          { id: 'south-orchard', name: 'South Orchard', location: 'Orchard B2', status: 'active' },
-          { id: 'west-plot', name: 'West Plot', location: 'Plot C3', status: 'inactive' }
-        ]);
+        // No default stations - admin must add them
+        setStations([]);
       }
     });
 
@@ -197,10 +219,81 @@ export default function Dashboard() {
     setEditingStation(null);
   };
 
-  const handleSaveSettings = () => {
-    // Here you would typically update the user profile in Firebase
-    setSettingsSaved(true);
-    setTimeout(() => setSettingsSaved(false), 3000);
+  const handleSaveSettings = async () => {
+    setSettingsError('');
+    setSettingsSaved(false);
+
+    try {
+      const auth = getAuth();
+      const currentUser = auth.currentUser;
+
+      if (!currentUser) {
+        setSettingsError('User not authenticated');
+        return;
+      }
+
+      // Update display name if changed
+      if (userProfile.displayName && userProfile.displayName !== currentUser.displayName) {
+        await updateProfile(currentUser, {
+          displayName: userProfile.displayName
+        });
+      }
+
+      // Save user profile to database
+      if (db) {
+        const userRef = ref(db, `users/${currentUser.uid}`);
+        await set(userRef, {
+          displayName: userProfile.displayName,
+          email: currentUser.email,
+          phone: userProfile.phone,
+          updatedAt: new Date().toISOString()
+        });
+      }
+
+      // Update password if provided
+      if (userProfile.newPassword && userProfile.confirmPassword) {
+        if (userProfile.newPassword !== userProfile.confirmPassword) {
+          setSettingsError('Passwords do not match');
+          return;
+        }
+        if (userProfile.newPassword.length < 6) {
+          setSettingsError('Password must be at least 6 characters');
+          return;
+        }
+        await updatePassword(currentUser, userProfile.newPassword);
+        // Clear password fields after successful update
+        setUserProfile(prev => ({ ...prev, newPassword: '', confirmPassword: '' }));
+      }
+
+      setSettingsSaved(true);
+      setTimeout(() => setSettingsSaved(false), 3000);
+
+      // Check if profile is now complete
+      setProfileComplete(!!(userProfile.displayName && userProfile.phone && currentUser.emailVerified));
+    } catch (error: any) {
+      console.error('Error saving settings:', error);
+      if (error.code === 'auth/requires-recent-login') {
+        setSettingsError('Please log out and log in again to change your password');
+      } else {
+        setSettingsError(error.message || 'Failed to save settings');
+      }
+    }
+  };
+
+  const handleSendVerificationEmail = async () => {
+    try {
+      const auth = getAuth();
+      const currentUser = auth.currentUser;
+
+      if (currentUser) {
+        await sendEmailVerification(currentUser);
+        setVerificationSent(true);
+        setTimeout(() => setVerificationSent(false), 5000);
+      }
+    } catch (error: any) {
+      console.error('Error sending verification email:', error);
+      setSettingsError('Failed to send verification email. Please try again.');
+    }
   };
 
   const getLatestData = (stationId?: string) => {
@@ -228,6 +321,57 @@ export default function Dashboard() {
   };
 
   const renderContent = () => {
+    // Check if profile is complete before allowing access to certain sections
+    if (!profileComplete && active !== 'settings') {
+      if (active === 'dashboard' || active === 'drone-control') {
+        return (
+          <div className="flex items-center justify-center h-full">
+            <div className="bg-white rounded-xl shadow-lg p-8 max-w-md w-full">
+              <div className="flex items-center gap-3 mb-4">
+                <AlertCircle className="w-8 h-8 text-yellow-500" />
+                <h2 className="text-xl font-bold text-gray-800">Complete Your Profile</h2>
+              </div>
+              <p className="text-gray-600 mb-6">
+                Please complete your profile and verify your email to access this section.
+              </p>
+              <div className="space-y-3 mb-6">
+                <div className="flex items-center gap-2">
+                  {userProfile.displayName ? (
+                    <CheckCircle className="w-5 h-5 text-green-500" />
+                  ) : (
+                    <AlertCircle className="w-5 h-5 text-yellow-500" />
+                  )}
+                  <span className="text-sm">Display Name {userProfile.displayName ? 'Added' : 'Required'}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  {userProfile.phone ? (
+                    <CheckCircle className="w-5 h-5 text-green-500" />
+                  ) : (
+                    <AlertCircle className="w-5 h-5 text-yellow-500" />
+                  )}
+                  <span className="text-sm">Phone Number {userProfile.phone ? 'Added' : 'Required'}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  {emailVerified ? (
+                    <CheckCircle className="w-5 h-5 text-green-500" />
+                  ) : (
+                    <AlertCircle className="w-5 h-5 text-yellow-500" />
+                  )}
+                  <span className="text-sm">Email {emailVerified ? 'Verified' : 'Verification Required'}</span>
+                </div>
+              </div>
+              <Button
+                onClick={() => setActive('settings')}
+                className="w-full bg-green-600 hover:bg-green-700"
+              >
+                Go to Settings
+              </Button>
+            </div>
+          </div>
+        );
+      }
+    }
+
     switch(active) {
       case 'dashboard':
         const latestData = getLatestData();
@@ -371,41 +515,103 @@ export default function Dashboard() {
             <div className="bg-white rounded-xl shadow-lg p-6">
               <h2 className="text-2xl font-bold text-gray-800 mb-6">User Settings</h2>
 
+              {/* Profile Completion Status */}
+              {!profileComplete && (
+                <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                  <div className="flex items-start gap-3">
+                    <AlertCircle className="w-5 h-5 text-yellow-600 mt-0.5" />
+                    <div>
+                      <h4 className="font-semibold text-yellow-800">Complete Your Profile</h4>
+                      <p className="text-sm text-yellow-700 mt-1">
+                        Please fill in all required information and verify your email to access all features.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               <div className="space-y-6 max-w-2xl">
+                {/* Email Verification Status */}
+                {!emailVerified && (
+                  <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <Mail className="w-5 h-5 text-blue-600" />
+                        <div>
+                          <p className="font-semibold text-blue-800">Email Verification Required</p>
+                          <p className="text-sm text-blue-700">Verify your email to unlock all features</p>
+                        </div>
+                      </div>
+                      <Button
+                        onClick={handleSendVerificationEmail}
+                        variant="outline"
+                        className="border-blue-600 text-blue-600 hover:bg-blue-50"
+                      >
+                        Send Verification Email
+                      </Button>
+                    </div>
+                    {verificationSent && (
+                      <p className="text-sm text-green-600 mt-3 flex items-center gap-2">
+                        <CheckCircle className="w-4 h-4" />
+                        Verification email sent! Check your inbox.
+                      </p>
+                    )}
+                  </div>
+                )}
+
                 <div className="space-y-4">
                   <h3 className="text-lg font-semibold text-gray-700">Profile Information</h3>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <Label htmlFor="displayName">Display Name</Label>
+                      <Label htmlFor="displayName">
+                        Display Name <span className="text-red-500">*</span>
+                      </Label>
                       <Input
                         id="displayName"
                         value={userProfile.displayName}
                         onChange={(e) => setUserProfile({...userProfile, displayName: e.target.value})}
                         placeholder="Your name"
+                        className={!userProfile.displayName ? 'border-yellow-400' : ''}
                       />
+                      {!userProfile.displayName && (
+                        <p className="text-xs text-yellow-600 mt-1">Required for full access</p>
+                      )}
                     </div>
 
                     <div>
                       <Label htmlFor="email">Email</Label>
-                      <Input
-                        id="email"
-                        type="email"
-                        value={userProfile.email}
-                        disabled
-                        className="bg-gray-50"
-                      />
+                      <div className="relative">
+                        <Input
+                          id="email"
+                          type="email"
+                          value={userProfile.email}
+                          disabled
+                          className="bg-gray-50 pr-10"
+                        />
+                        {emailVerified ? (
+                          <CheckCircle className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-green-500" />
+                        ) : (
+                          <AlertCircle className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-yellow-500" />
+                        )}
+                      </div>
                     </div>
 
                     <div>
-                      <Label htmlFor="phone">Phone Number</Label>
+                      <Label htmlFor="phone">
+                        Phone Number <span className="text-red-500">*</span>
+                      </Label>
                       <Input
                         id="phone"
                         type="tel"
                         value={userProfile.phone}
                         onChange={(e) => setUserProfile({...userProfile, phone: e.target.value})}
                         placeholder="+62 xxx-xxxx-xxxx"
+                        className={!userProfile.phone ? 'border-yellow-400' : ''}
                       />
+                      {!userProfile.phone && (
+                        <p className="text-xs text-yellow-600 mt-1">Required for full access</p>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -421,7 +627,7 @@ export default function Dashboard() {
                         type="password"
                         value={userProfile.newPassword}
                         onChange={(e) => setUserProfile({...userProfile, newPassword: e.target.value})}
-                        placeholder="Enter new password"
+                        placeholder="Enter new password (min. 6 characters)"
                       />
                     </div>
 
@@ -433,18 +639,44 @@ export default function Dashboard() {
                         value={userProfile.confirmPassword}
                         onChange={(e) => setUserProfile({...userProfile, confirmPassword: e.target.value})}
                         placeholder="Confirm new password"
+                        className={
+                          userProfile.confirmPassword && userProfile.newPassword !== userProfile.confirmPassword
+                            ? 'border-red-400'
+                            : ''
+                        }
                       />
+                      {userProfile.confirmPassword && userProfile.newPassword !== userProfile.confirmPassword && (
+                        <p className="text-xs text-red-600 mt-1">Passwords do not match</p>
+                      )}
                     </div>
                   </div>
                 </div>
 
+                {/* Error Message */}
+                {settingsError && (
+                  <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
+                    <p className="text-red-700 flex items-center gap-2">
+                      <X className="w-4 h-4" />
+                      {settingsError}
+                    </p>
+                  </div>
+                )}
+
                 <div className="flex gap-4 pt-4">
-                  <Button onClick={handleSaveSettings} className="bg-green-600 hover:bg-green-700">
+                  <Button
+                    onClick={handleSaveSettings}
+                    className="bg-green-600 hover:bg-green-700"
+                    disabled={
+                      (userProfile.newPassword && userProfile.newPassword !== userProfile.confirmPassword) ||
+                      (userProfile.newPassword && userProfile.newPassword.length < 6)
+                    }
+                  >
                     <Save className="w-4 h-4 mr-2" />
                     Save Changes
                   </Button>
                   {settingsSaved && (
-                    <p className="text-green-600 flex items-center">
+                    <p className="text-green-600 flex items-center gap-2">
+                      <CheckCircle className="w-4 h-4" />
                       Settings saved successfully!
                     </p>
                   )}
@@ -667,33 +899,56 @@ export default function Dashboard() {
               </button>
             </nav>
 
-            {isAdmin && (
+            <div className="p-4 border-t border-green-600/20 space-y-1 mt-auto">
+              {/* User Profile Info */}
+              <div className="mb-3 px-3 py-2 bg-white/10 rounded-lg">
+                <div className="flex items-center gap-2">
+                  <User className="w-4 h-4 text-green-100" />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-white text-sm font-medium truncate">
+                      {userProfile.displayName || 'Set Your Name'}
+                    </p>
+                    <p className="text-green-100 text-xs truncate">{user?.email}</p>
+                  </div>
+                  {!emailVerified && (
+                    <span title="Email not verified">
+                      <AlertCircle className="w-4 h-4 text-yellow-400 flex-shrink-0" />
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              {isAdmin && (
+                <button
+                  className="flex items-center gap-3 px-4 py-2 rounded-lg text-sm w-full transition-all duration-150 text-left bg-yellow-500/20 hover:bg-yellow-500/30 text-white"
+                  onClick={() => router.push('/admin')}
+                >
+                  <Shield className="w-4 h-4" />
+                  <span className="font-medium">Admin Panel</span>
+                </button>
+              )}
+
               <button
-                className="flex items-center gap-3 px-3 py-2 rounded-md text-sm font-normal transition-all duration-150 hover:bg-yellow-100 text-yellow-800 mt-6 text-left"
-                onClick={() => router.push('/admin')}
+                className={`flex items-center gap-3 px-4 py-2 rounded-lg text-sm w-full transition-all duration-150 text-left ${
+                  active === 'settings' ? 'bg-white text-green-800 shadow-lg' : 'hover:bg-white/20 text-white'
+                }`}
+                onClick={() => setActive('settings')}
               >
-                <Shield className="w-5 h-5" />
-                <span className="truncate font-normal">Admin Panel</span>
+                <Settings className="w-4 h-4" />
+                <span className="font-medium">Settings</span>
+                {!profileComplete && (
+                  <span className="ml-auto w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></span>
+                )}
               </button>
-            )}
 
-            <button
-              className={`flex items-center gap-3 px-3 py-2 rounded-md text-sm font-normal transition-all duration-150 text-left mt-2 ${
-                active === 'settings' ? 'bg-white/80 text-green-900 shadow-sm' : 'hover:bg-green-100 text-green-900'
-              }`}
-              onClick={() => setActive('settings')}
-            >
-              <Settings className="w-5 h-5" />
-              <span className="truncate font-normal">User Settings</span>
-            </button>
-
-            <button
-              className="flex items-center gap-3 px-3 py-2 rounded-md text-sm font-normal transition-all duration-150 hover:bg-red-100 text-red-800 mt-2 text-left"
-              onClick={() => logout()}
-            >
-              <LogOut className="w-5 h-5" />
-              <span className="truncate font-normal">Logout</span>
-            </button>
+              <button
+                className="flex items-center gap-3 px-4 py-2 rounded-lg text-sm hover:bg-red-500/20 text-white w-full transition-all duration-150 text-left"
+                onClick={() => logout()}
+              >
+                <LogOut className="w-4 h-4" />
+                <span className="font-medium">Logout</span>
+              </button>
+            </div>
           </aside>
 
           {/* Main Content */}
