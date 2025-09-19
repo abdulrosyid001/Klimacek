@@ -38,6 +38,7 @@ export default function EmailTest() {
   const [newPassword, setNewPassword] = useState('');
   const [isLoading, setIsLoading] = useState<{ [key: string]: boolean }>({});
   const [testReport, setTestReport] = useState<any>(null);
+  const [activeTab, setActiveTab] = useState('tests');
 
   useEffect(() => {
     // Check if returning from email link
@@ -115,7 +116,7 @@ export default function EmailTest() {
             </p>
           </div>
 
-          <Tabs defaultValue="tests" className="w-full">
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
             <TabsList className="grid w-full grid-cols-4">
               <TabsTrigger value="tests">Run Tests</TabsTrigger>
               <TabsTrigger value="results">Test Results</TabsTrigger>
@@ -446,7 +447,7 @@ export default function EmailTest() {
                               <XCircle className="h-5 w-5 text-red-500" />
                             )}
                             <span className="font-semibold">{result.type}</span>
-                            <Badge variant={result.success ? 'default' : 'destructive'}>
+                            <Badge variant={result.success ? 'default' : 'secondary'}>
                               {result.success ? 'Success' : 'Failed'}
                             </Badge>
                           </div>
@@ -652,7 +653,7 @@ export default function EmailTest() {
                           <strong>Emails not arriving:</strong> Check spam folder, verify DNS records, check Firebase quotas
                         </div>
                         <div className="p-3 bg-yellow-50 border border-yellow-200 rounded">
-                          <strong>Invalid action code:</strong> Code may be expired (>1 hour) or already used
+                          <strong>Invalid action code:</strong> Code may be expired (&gt;1 hour) or already used
                         </div>
                         <div className="p-3 bg-yellow-50 border border-yellow-200 rounded">
                           <strong>Requires recent login:</strong> User needs to re-authenticate for sensitive operations
