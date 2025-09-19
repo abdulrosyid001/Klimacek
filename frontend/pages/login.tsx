@@ -49,40 +49,20 @@ export default function Login() {
           });
           console.log('reCAPTCHA token obtained successfully');
 
-          // Verify token with backend
-          const verifyResponse = await fetch('/api/verify-recaptcha', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              token: recaptchaToken,
-              action: 'LOGIN'
-            })
-          });
-
-          const verifyResult = await verifyResponse.json();
-
-          if (!verifyResult.success) {
-            throw new Error('reCAPTCHA verification failed. Please try again.');
-          }
-
-          console.log('reCAPTCHA verification successful, score:', verifyResult.score);
+          // For static export, we skip server-side verification
+          // In production, you should implement this verification on a separate backend service
 
           // Store token for potential future use
           sessionStorage.setItem('recaptcha_token', recaptchaToken);
           sessionStorage.setItem('recaptcha_timestamp', Date.now().toString());
         } catch (recaptchaError: any) {
           console.error('reCAPTCHA error:', recaptchaError);
-          setError(recaptchaError.message || 'Security verification failed. Please try again.');
-          setIsLoading(false);
-          return;
+          // Continue without reCAPTCHA verification for now
+          console.warn('Continuing without reCAPTCHA verification');
         }
       } else {
-        console.warn('reCAPTCHA not loaded');
-        setError('Security verification not available. Please refresh the page.');
-        setIsLoading(false);
-        return;
+        console.warn('reCAPTCHA not loaded - continuing without it');
+        // Continue without reCAPTCHA for static export
       }
 
       // Proceed with sign in

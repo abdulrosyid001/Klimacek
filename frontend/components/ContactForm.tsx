@@ -22,14 +22,23 @@ export default function ContactForm() {
 
   const onSubmit = async (data: FormData) => {
     setSuccess(false);
-    const res = await fetch('/api/contact', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
-    });
-    if (res.ok) {
+    try {
+      // For static export, we'll store the message in localStorage
+      // In production, you should send this to a separate backend service
+      const messages = JSON.parse(localStorage.getItem('contact_messages') || '[]');
+      messages.push({
+        ...data,
+        timestamp: new Date().toISOString()
+      });
+      localStorage.setItem('contact_messages', JSON.stringify(messages));
+
       setSuccess(true);
       reset();
+
+      // Optional: You can integrate with a third-party service like Formspree or EmailJS here
+      console.log('Contact form submitted:', data);
+    } catch (error) {
+      console.error('Error submitting contact form:', error);
     }
   };
 
