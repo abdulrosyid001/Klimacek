@@ -77,6 +77,8 @@ export default function Login() {
         setError('User not found. Please contact admin to create an account.');
       } else if (error.code === 'auth/wrong-password') {
         setError('Incorrect password. Please try again.');
+      } else if (error.code === 'auth/invalid-credential') {
+        setError('Invalid email or password. Please check your credentials and try again.');
       } else if (error.code === 'auth/invalid-email') {
         setError('Invalid email address.');
       } else if (error.code === 'auth/too-many-requests') {

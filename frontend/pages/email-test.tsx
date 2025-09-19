@@ -4,6 +4,7 @@ import { EmailTestingService, EmailTestResult } from '../lib/email-test-utils';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import AdminRoute from '../components/AdminRoute';
+import RecaptchaVerification from '../components/RecaptchaVerification';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
@@ -39,6 +40,8 @@ export default function EmailTest() {
   const [isLoading, setIsLoading] = useState<{ [key: string]: boolean }>({});
   const [testReport, setTestReport] = useState<any>(null);
   const [activeTab, setActiveTab] = useState('tests');
+  const [showCaptcha, setShowCaptcha] = useState(false);
+  const [isVerified, setIsVerified] = useState(false);
 
   useEffect(() => {
     // Check if returning from email link
@@ -55,6 +58,9 @@ export default function EmailTest() {
     if (window.location.href.includes('auth/action')) {
       setEmailLink(window.location.href);
     }
+
+    // Show reCAPTCHA verification on page load
+    setShowCaptcha(true);
   }, []);
 
   const runTest = async (testName: string, testFunction: () => Promise<EmailTestResult>) => {
@@ -100,10 +106,32 @@ export default function EmailTest() {
     setTestReport(null);
   };
 
+  const handleVerified = () => {
+    setIsVerified(true);
+    setShowCaptcha(false);
+    console.log('✅ reCAPTCHA verification successful');
+  };
+
+  const handleSkip = () => {
+    setIsVerified(true);
+    setShowCaptcha(false);
+    console.log('⚠️ reCAPTCHA verification skipped');
+  };
+
   return (
     <AdminRoute>
       <div className="min-h-screen flex flex-col bg-neutral-50">
         <Header />
+
+        {/* reCAPTCHA Verification Modal */}
+        {showCaptcha && !isVerified && (
+          <RecaptchaVerification
+            onVerified={handleVerified}
+            onSkip={handleSkip}
+            action="email_test"
+            skipEnabled={true}
+          />
+        )}
 
         <main className="flex-1 container mx-auto px-4 py-8">
           <div className="mb-8">

@@ -14,7 +14,7 @@ import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import dynamic from 'next/dynamic';
-import PuzzleVerification from '../components/PuzzleVerification';
+import RecaptchaVerification from '../components/RecaptchaVerification';
 
 const DroneControl = dynamic(() => import('../components/drone-control'), {
   ssr: false
@@ -182,6 +182,12 @@ export default function Dashboard() {
   }, []);
 
   const handleAddStation = async () => {
+    // Check if email is verified before allowing station addition
+    if (!emailVerified) {
+      setActive('settings');
+      return;
+    }
+
     if (!newStation.name || !newStation.location) return;
 
     const station: Station = {
@@ -203,6 +209,12 @@ export default function Dashboard() {
   };
 
   const handleDeleteStation = async (stationId: string) => {
+    // Check if email is verified before allowing station deletion
+    if (!emailVerified) {
+      setActive('settings');
+      return;
+    }
+
     if (db) {
       const stationRef = ref(db, `stations/${stationId}`);
       await remove(stationRef);
@@ -211,6 +223,12 @@ export default function Dashboard() {
   };
 
   const handleUpdateStation = async (station: Station) => {
+    // Check if email is verified before allowing station updates
+    if (!emailVerified) {
+      setActive('settings');
+      return;
+    }
+
     if (db) {
       const stationRef = ref(db, `stations/${station.id}`);
       await set(stationRef, station);
@@ -500,6 +518,42 @@ export default function Dashboard() {
         );
 
       case 'drone':
+        // Check if profile is complete before showing drone control
+        if (!profileComplete) {
+          return (
+            <div className="space-y-6">
+              <div className="bg-white rounded-xl shadow-lg p-6">
+                <h2 className="text-2xl font-bold text-gray-800 mb-4">Drone Control Center</h2>
+                <div className="bg-orange-50 border-l-4 border-orange-400 p-4">
+                  <div className="flex items-center">
+                    <AlertCircle className="h-6 w-6 text-orange-400 mr-3" />
+                    <div>
+                      <p className="text-sm text-orange-700 font-medium">Complete Your Profile</p>
+                      <p className="text-sm text-orange-600 mt-1">Please complete your profile and verify your email to access this section.</p>
+                      <div className="mt-3 space-y-1">
+                        <p className="text-xs text-gray-600">
+                          {userProfile.displayName ? '✓' : '✗'} Display Name {userProfile.displayName ? 'Added' : 'Required'}
+                        </p>
+                        <p className="text-xs text-gray-600">
+                          {userProfile.phone ? '✓' : '✗'} Phone Number {userProfile.phone ? 'Added' : 'Required'}
+                        </p>
+                        <p className="text-xs text-gray-600">
+                          {emailVerified ? '✓' : '✗'} Email Verification {emailVerified ? 'Completed' : 'Required'}
+                        </p>
+                      </div>
+                      <Button
+                        onClick={() => setActive('settings')}
+                        className="mt-4 bg-orange-500 hover:bg-orange-600 text-white"
+                      >
+                        Go to Settings
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        }
         return (
           <div className="space-y-6">
             <div className="bg-white rounded-xl shadow-lg p-6">
@@ -838,7 +892,12 @@ export default function Dashboard() {
   if (!puzzleVerified) {
     return (
       <ProtectedRoute>
-        <PuzzleVerification onSuccess={() => setPuzzleVerified(true)} />
+        <RecaptchaVerification
+          onVerified={() => setPuzzleVerified(true)}
+          onSkip={() => setPuzzleVerified(true)}
+          action="dashboard_access"
+          skipEnabled={true}
+        />
       </ProtectedRoute>
     );
   }
@@ -849,8 +908,8 @@ export default function Dashboard() {
         <div className="flex flex-1">
           {/* Sidebar */}
           <aside className="h-full w-64 bg-[#2ecc71] border-r border-green-300 shadow-md flex flex-col py-6 px-4">
-            <div className="mb-6 flex justify-start items-center pl-1">
-              <Image src="/images/logo.png" alt="Logo" width={40} height={40} className="rounded-full" />
+            <div className="mb-8 flex justify-center items-center">
+              <Image src="/images/logo.png" alt="Logo" width={80} height={80} className="rounded-full" />
             </div>
             <nav className="flex-1 flex flex-col gap-1">
               <button
@@ -865,12 +924,21 @@ export default function Dashboard() {
 
               <button
                 className={`flex items-center gap-3 px-3 py-2 rounded-md text-base font-normal transition-all duration-150 text-left ${
+                  !profileComplete ? 'opacity-50 cursor-not-allowed bg-gray-100' :
                   active === 'drone' ? 'bg-white/80 text-green-900 shadow-sm' : 'hover:bg-green-100 text-green-900'
                 }`}
-                onClick={() => setActive('drone')}
+                onClick={() => {
+                  if (!profileComplete) {
+                    setActive('settings');
+                  } else {
+                    setActive('drone');
+                  }
+                }}
+                title={!profileComplete ? 'Complete profile required' : 'Drone Control'}
               >
                 <Plane className="w-5 h-5" />
                 <span className="truncate font-normal">Drone Control</span>
+                {!profileComplete && <AlertCircle className="w-4 h-4 ml-auto text-orange-500" />}
               </button>
 
               <div className="mt-3 mb-1 text-xs font-semibold uppercase tracking-wide text-green-100">Stasiun Cuaca</div>
@@ -890,12 +958,21 @@ export default function Dashboard() {
 
               <button
                 className={`flex items-center gap-3 px-3 py-2 rounded-md text-sm font-normal transition-all duration-150 text-left mt-3 ${
+                  !emailVerified ? 'opacity-50 cursor-not-allowed bg-gray-100' :
                   active === 'add-station' ? 'bg-white/80 text-green-900 shadow-sm' : 'hover:bg-green-100 text-green-900'
                 }`}
-                onClick={() => setActive('add-station')}
+                onClick={() => {
+                  if (!emailVerified) {
+                    setActive('settings');
+                  } else {
+                    setActive('add-station');
+                  }
+                }}
+                title={!emailVerified ? 'Email verification required' : 'Add new station'}
               >
                 <Plus className="w-5 h-5" />
                 <span className="truncate font-normal">Tambah Stasiun</span>
+                {!emailVerified && <AlertCircle className="w-4 h-4 ml-auto text-orange-500" />}
               </button>
             </nav>
 
