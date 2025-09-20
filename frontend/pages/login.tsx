@@ -42,11 +42,16 @@ export default function Login() {
     try {
       // Get Turnstile token from form
       const form = e.target as HTMLFormElement;
-      const turnstileResponse = form['cf-turnstile-response']?.value;
+      const turnstileInput = form.querySelector('input[name="cf-turnstile-response"]') as HTMLInputElement;
+      const turnstileResponse = turnstileInput?.value || form['cf-turnstile-response']?.value;
 
       if (!turnstileResponse) {
         setError('Please complete the security verification');
         setIsLoading(false);
+        // Reset the Turnstile widget
+        if (window.turnstile) {
+          window.turnstile.reset();
+        }
         return;
       }
 
@@ -160,9 +165,15 @@ export default function Login() {
                   {error}
                 </div>
               )}
+              <div
+                className="cf-turnstile"
+                data-sitekey="0x4AAAAAAB2RiJ8Y9p6mzxW4"
+                data-theme="auto"
+                data-action="login"
+              ></div>
               <Button
                 type="submit"
-                className="w-full bg-[#2ecc71] hover:bg-[#27ae60]"
+                className="w-full bg-[#2ecc71] hover:bg-[#27ae60] mt-4"
                 disabled={isLoading}
               >
                 {isLoading ? (
@@ -177,12 +188,6 @@ export default function Login() {
                   </span>
                 )}
               </Button>
-              <div
-                className="cf-turnstile mt-4"
-                data-sitekey="0x4AAAAAAB2RiJ8Y9p6mzxW4"
-                data-theme="auto"
-                data-action="login"
-              ></div>
             </form>
             <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded">
               <p className="text-sm text-blue-800">
