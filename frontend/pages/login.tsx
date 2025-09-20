@@ -11,7 +11,7 @@ import { LogIn, Eye, EyeOff } from 'lucide-react';
 
 declare global {
   interface Window {
-    grecaptcha: any;
+    turnstile: any;
   }
 }
 
@@ -40,38 +40,42 @@ export default function Login() {
     setIsLoading(true);
 
     try {
-      // Execute reCAPTCHA
-      let recaptchaToken = '';
-      if (typeof window !== 'undefined' && window.grecaptcha && window.grecaptcha.enterprise) {
-        try {
-          recaptchaToken = await window.grecaptcha.enterprise.execute('6LeNbc4rAAAAAF6TytlsbsacAAcw_B69AoSi3QNU', {
-            action: 'LOGIN'
-          });
-          console.log('reCAPTCHA token obtained successfully');
+      // Get Turnstile token from form
+      const form = e.target as HTMLFormElement;
+      const turnstileResponse = form['cf-turnstile-response']?.value;
 
-          // For static export, we skip server-side verification
-          // In production, you should implement this verification on a separate backend service
+      if (!turnstileResponse) {
+        setError('Please complete the security verification');
+        setIsLoading(false);
+        return;
+      }
 
-          // Store token for potential future use
-          sessionStorage.setItem('recaptcha_token', recaptchaToken);
-          sessionStorage.setItem('recaptcha_timestamp', Date.now().toString());
-        } catch (recaptchaError: any) {
-          console.error('reCAPTCHA error:', recaptchaError);
-          // Continue without reCAPTCHA verification for now
-          console.warn('Continuing without reCAPTCHA verification');
+      // Verify Turnstile token
+      const verifyResponse = await fetch('/api/verify-turnstile', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          token: turnstileResponse,
+        }),
+      });
+
+      const verifyResult = await verifyResponse.json();
+
+      if (!verifyResult.success) {
+        setError('Security verification failed. Please try again.');
+        // Reset the Turnstile widget
+        if (window.turnstile) {
+          window.turnstile.reset();
         }
-      } else {
-        console.warn('reCAPTCHA not loaded - continuing without it');
-        // Continue without reCAPTCHA for static export
+        setIsLoading(false);
+        return;
       }
 
-      // Proceed with sign in
+      // Proceed with sign in if Turnstile verification passed
       await signIn(formData.email, formData.password);
-
-      // Log successful login with reCAPTCHA info
-      if (recaptchaToken) {
-        console.log('Login successful with reCAPTCHA protection');
-      }
+      console.log('Login successful with Turnstile protection');
     } catch (error: any) {
       if (error.code === 'auth/user-not-found') {
         setError('User not found. Please contact admin to create an account.');
@@ -173,6 +177,12 @@ export default function Login() {
                   </span>
                 )}
               </Button>
+              <div
+                className="cf-turnstile mt-4"
+                data-sitekey="0x4AAAAAAB2RiJ8Y9p6mzxW4"
+                data-theme="auto"
+                data-action="login"
+              ></div>
             </form>
             <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded">
               <p className="text-sm text-blue-800">
@@ -185,15 +195,7 @@ export default function Login() {
               </p>
             </div>
             <div className="mt-4 text-center text-xs text-gray-500">
-              This site is protected by reCAPTCHA Enterprise and the Google{' '}
-              <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="underline hover:text-gray-700">
-                Privacy Policy
-              </a>{' '}
-              and{' '}
-              <a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer" className="underline hover:text-gray-700">
-                Terms of Service
-              </a>{' '}
-              apply.
+              This site is protected by Cloudflare Turnstile.
             </div>
           </CardContent>
         </Card>

@@ -4,7 +4,7 @@ import { EmailTestingService, EmailTestResult } from '../lib/email-test-utils';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import AdminRoute from '../components/AdminRoute';
-import RecaptchaVerification from '../components/RecaptchaVerification';
+import TurnstileVerification from '../components/TurnstileVerification';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
@@ -59,7 +59,7 @@ export default function EmailTest() {
       setEmailLink(window.location.href);
     }
 
-    // Show reCAPTCHA verification on page load
+    // Show Turnstile verification on page load
     setShowCaptcha(true);
   }, []);
 
@@ -109,13 +109,13 @@ export default function EmailTest() {
   const handleVerified = () => {
     setIsVerified(true);
     setShowCaptcha(false);
-    console.log('✅ reCAPTCHA verification successful');
+    console.log('✅ Turnstile verification successful');
   };
 
   const handleSkip = () => {
     setIsVerified(true);
     setShowCaptcha(false);
-    console.log('⚠️ reCAPTCHA verification skipped');
+    console.log('⚠️ Turnstile verification skipped');
   };
 
   return (
@@ -123,9 +123,9 @@ export default function EmailTest() {
       <div className="min-h-screen flex flex-col bg-neutral-50">
         <Header />
 
-        {/* reCAPTCHA Verification Modal */}
+        {/* Turnstile Verification Modal */}
         {showCaptcha && !isVerified && (
-          <RecaptchaVerification
+          <TurnstileVerification
             onVerified={handleVerified}
             onSkip={handleSkip}
             action="email_test"

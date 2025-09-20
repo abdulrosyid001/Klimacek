@@ -1,54 +1,73 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import { RecaptchaService } from '../lib/recaptcha';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
+import { TurnstileService } from '../lib/turnstile';
 import { Button } from './ui/button';
 import { AlertCircle, CheckCircle, Loader2, ShieldCheck } from 'lucide-react';
 
-interface RecaptchaVerificationProps {
+interface TurnstileVerificationProps {
   onVerified: () => void;
   onSkip?: () => void;
   action?: string;
   skipEnabled?: boolean;
 }
 
-export default function RecaptchaVerification({
+export default function TurnstileVerification({
   onVerified,
   onSkip,
   action = 'login',
   skipEnabled = true
-}: RecaptchaVerificationProps) {
+}: TurnstileVerificationProps) {
   const [verifying, setVerifying] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [verified, setVerified] = useState(false);
-  const [recaptchaService] = useState(() => RecaptchaService.getInstance());
+  const [turnstileService] = useState(() => TurnstileService.getInstance());
+  const [token, setToken] = useState<string | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Load reCAPTCHA script when component mounts
-    recaptchaService.loadScript().catch((err) => {
-      console.error('Failed to load reCAPTCHA:', err);
-      setError('Failed to load security verification');
-    });
-  }, [recaptchaService]);
+    if (containerRef.current) {
+      turnstileService.render('turnstile-widget', {
+        callback: async (turnstileToken: string) => {
+          setToken(turnstileToken);
+          await handleVerifyToken(turnstileToken);
+        },
+        'error-callback': (error: any) => {
+          console.error('Turnstile error:', error);
+          setError('Verification widget error. Please try again.');
+          setVerifying(false);
+        },
+        'expired-callback': () => {
+          setToken(null);
+          setError('Verification expired. Please try again.');
+          setVerifying(false);
+        },
+        theme: 'auto',
+        size: 'normal',
+        action: action
+      }).catch((err) => {
+        console.error('Failed to render Turnstile:', err);
+        setError('Failed to load security verification');
+      });
+    }
 
-  const handleVerify = useCallback(async () => {
-    if (verifying || verified) return;
+    return () => {
+      turnstileService.remove();
+    };
+  }, [turnstileService, action]);
+
+  const handleVerifyToken = useCallback(async (turnstileToken: string) => {
+    if (verified) return;
 
     setVerifying(true);
     setError(null);
 
     try {
-      // Execute reCAPTCHA
-      const token = await recaptchaService.execute(action);
-
-      // Send token to backend for verification
-      const response = await fetch('/api/verify-recaptcha', {
+      const response = await fetch('/api/verify-turnstile', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          token,
-          action,
-          siteKey: process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY
+          token: turnstileToken
         }),
       });
 
@@ -58,22 +77,22 @@ export default function RecaptchaVerification({
         throw new Error(result.error || 'Verification failed');
       }
 
-      if (result.success && result.score >= 0.5) {
+      if (result.success) {
         setVerified(true);
+        console.log('Turnstile verification successful');
         setTimeout(() => {
           onVerified();
         }, 1000);
-      } else if (result.score < 0.5) {
-        throw new Error('Verification failed. Please try again.');
       } else {
-        throw new Error('Invalid verification response');
+        throw new Error('Verification failed');
       }
     } catch (err) {
-      console.error('reCAPTCHA verification error:', err);
+      console.error('Turnstile verification error:', err);
       setError(err instanceof Error ? err.message : 'Verification failed');
       setVerifying(false);
+      turnstileService.reset();
     }
-  }, [verifying, verified, recaptchaService, action, onVerified]);
+  }, [verified, onVerified, turnstileService]);
 
   const handleSkip = useCallback(() => {
     if (onSkip) {
@@ -115,24 +134,16 @@ export default function RecaptchaVerification({
 
           {!verified && (
             <>
-              <Button
-                onClick={handleVerify}
-                disabled={verifying}
-                className="w-full bg-[#2ecc71] hover:bg-[#27ae60] text-white"
-                size="lg"
-              >
-                {verifying ? (
-                  <>
-                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    Verifying...
-                  </>
-                ) : (
-                  <>
-                    <ShieldCheck className="w-4 h-4 mr-2" />
-                    Verify
-                  </>
-                )}
-              </Button>
+              {verifying && (
+                <div className="flex items-center justify-center py-4">
+                  <Loader2 className="w-6 h-6 animate-spin text-[#2ecc71]" />
+                  <span className="ml-2 text-gray-600">Verifying...</span>
+                </div>
+              )}
+
+              {!verifying && (
+                <div id="turnstile-widget" ref={containerRef} className="flex justify-center"></div>
+              )}
 
               {skipEnabled && !verifying && (
                 <Button
@@ -151,7 +162,7 @@ export default function RecaptchaVerification({
               This verification helps protect your account from automated attacks
             </p>
             <p className="text-xs text-center text-gray-400 mt-1">
-              Protected by reCAPTCHA Enterprise
+              Protected by Cloudflare Turnstile
             </p>
           </div>
         </div>

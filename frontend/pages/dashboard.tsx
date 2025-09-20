@@ -14,7 +14,7 @@ import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import dynamic from 'next/dynamic';
-import RecaptchaVerification from '../components/RecaptchaVerification';
+import TurnstileVerification from '../components/TurnstileVerification';
 
 const DroneControl = dynamic(() => import('../components/drone-control'), {
   ssr: false
@@ -892,7 +892,7 @@ export default function Dashboard() {
   if (!puzzleVerified) {
     return (
       <ProtectedRoute>
-        <RecaptchaVerification
+        <TurnstileVerification
           onVerified={() => setPuzzleVerified(true)}
           onSkip={() => setPuzzleVerified(true)}
           action="dashboard_access"

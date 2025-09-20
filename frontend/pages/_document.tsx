@@ -18,13 +18,6 @@ export default function Document() {
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
-
-        {/* reCAPTCHA Enterprise */}
-        <script
-          src="https://www.google.com/recaptcha/enterprise.js?render=6LeNbc4rAAAAAF6TytlsbsacAAcw_B69AoSi3QNU"
-          async
-          defer
-        />
       </Head>
       <body className="bg-beige">
         <Main />
