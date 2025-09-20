@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../lib/auth-context';
 import { useRouter } from 'next/router';
 import Header from '../components/Header';
@@ -26,6 +26,8 @@ export default function Login() {
     password: ''
   });
   const [showPassword, setShowPassword] = useState(false);
+  const [turnstileWidgetId, setTurnstileWidgetId] = useState<string | null>(null);
+  const turnstileRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // Check for message in query params
@@ -34,23 +36,57 @@ export default function Login() {
     }
   }, [router.query]);
 
+  useEffect(() => {
+    // Initialize Turnstile widget when component mounts
+    const initTurnstile = () => {
+      if (window.turnstile && turnstileRef.current && !turnstileWidgetId) {
+        const widgetId = window.turnstile.render(turnstileRef.current, {
+          sitekey: '0x4AAAAAAB2RiJ8Y9p6mzxW4',
+          theme: 'auto',
+          action: 'login',
+          callback: function(token: string) {
+            console.log('Turnstile token received:', token ? 'Token generated' : 'No token');
+          }
+        });
+        setTurnstileWidgetId(widgetId);
+      }
+    };
+
+    // Check if Turnstile is already loaded
+    if (window.turnstile) {
+      initTurnstile();
+    } else {
+      // Wait for Turnstile to load
+      const checkInterval = setInterval(() => {
+        if (window.turnstile) {
+          clearInterval(checkInterval);
+          initTurnstile();
+        }
+      }, 100);
+
+      return () => clearInterval(checkInterval);
+    }
+  }, [turnstileWidgetId]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setIsLoading(true);
 
     try {
-      // Get Turnstile token from form
-      const form = e.target as HTMLFormElement;
-      const turnstileInput = form.querySelector('input[name="cf-turnstile-response"]') as HTMLInputElement;
-      const turnstileResponse = turnstileInput?.value || form['cf-turnstile-response']?.value;
+      // Get Turnstile token using the widget API
+      let turnstileResponse = null;
+
+      if (window.turnstile && turnstileWidgetId !== null) {
+        turnstileResponse = window.turnstile.getResponse(turnstileWidgetId);
+      }
 
       if (!turnstileResponse) {
         setError('Please complete the security verification');
         setIsLoading(false);
-        // Reset the Turnstile widget
-        if (window.turnstile) {
-          window.turnstile.reset();
+        // Reset the Turnstile widget using the widget ID
+        if (window.turnstile && turnstileWidgetId !== null) {
+          window.turnstile.reset(turnstileWidgetId);
         }
         return;
       }
@@ -70,9 +106,9 @@ export default function Login() {
 
       if (!verifyResult.success) {
         setError('Security verification failed. Please try again.');
-        // Reset the Turnstile widget
-        if (window.turnstile) {
-          window.turnstile.reset();
+        // Reset the Turnstile widget using the widget ID
+        if (window.turnstile && turnstileWidgetId !== null) {
+          window.turnstile.reset(turnstileWidgetId);
         }
         setIsLoading(false);
         return;
@@ -166,10 +202,8 @@ export default function Login() {
                 </div>
               )}
               <div
+                ref={turnstileRef}
                 className="cf-turnstile"
-                data-sitekey="0x4AAAAAAB2RiJ8Y9p6mzxW4"
-                data-theme="auto"
-                data-action="login"
               ></div>
               <Button
                 type="submit"
