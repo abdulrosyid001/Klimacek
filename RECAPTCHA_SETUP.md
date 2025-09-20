@@ -6,12 +6,14 @@ This document describes the reCAPTCHA Enterprise implementation in the ATAMAGRI 
 ## Current Configuration
 
 ### Environment Variables
-The following environment variables are configured in `frontend/.env.local`:
+The following environment variables need to be configured in `frontend/.env.local`:
 
 ```env
-NEXT_PUBLIC_RECAPTCHA_SITE_KEY=6LdbhM4rAAAAAG2o7y2FhnaHwf7AbFCcDWeCROj1
-RECAPTCHA_API_KEY=AIzaSyAJcKWVzXmJ7A4xxu7afUlvvUgjcLLJHfM
+NEXT_PUBLIC_RECAPTCHA_SITE_KEY=your_recaptcha_site_key_here
+RECAPTCHA_API_KEY=your_recaptcha_api_key_here
 ```
+
+⚠️ **SECURITY WARNING**: Never commit actual API keys to version control. Always use environment variables and keep your `.env.local` file in `.gitignore`.
 
 ### Implementation Details
 
@@ -46,6 +48,26 @@ RECAPTCHA_API_KEY=AIzaSyAJcKWVzXmJ7A4xxu7afUlvvUgjcLLJHfM
   - Register: 0.7 (stricter)
   - Purchase: 0.8 (very strict)
 - Returns score, action, and pass/fail status
+
+## ⚠️ URGENT: Key Rotation Required
+
+Since API keys were previously exposed in this repository, they must be rotated immediately:
+
+1. **Go to Google Cloud Console**: https://console.cloud.google.com/security/recaptcha
+2. **Delete the compromised keys**:
+   - Site Key ending in: ...ROj1
+   - API Key starting with: AIzaSy...
+3. **Create new keys**:
+   - Click "Create Key" or "+" button
+   - Select "Website" for platform
+   - Add your domains
+   - Copy the new Site Key
+4. **Create new API credentials**:
+   - Go to APIs & Services > Credentials
+   - Create new API key
+   - Restrict it to reCAPTCHA Enterprise API only
+5. **Update your `.env.local` file** with the new keys
+6. **Never commit `.env.local` to Git**
 
 ## How It Works
 

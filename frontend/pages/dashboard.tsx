@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Home, Plane, Settings, LogOut, Shield, Plus, CloudRain, Wind, Sun, Thermometer, Droplets, Battery, Activity, RefreshCw, MapPin, Wifi, WifiOff, Edit2, Trash2, Save, X, User, Mail, Phone, Lock, CheckCircle, AlertCircle } from 'lucide-react';
+import { Home, Plane, Settings, LogOut, Shield, Plus, CloudRain, Wind, Sun, Thermometer, Droplets, Battery, Activity, RefreshCw, MapPin, Wifi, WifiOff, Edit2, Trash2, Save, X, User, Mail, Phone, Lock, CheckCircle, AlertCircle, Menu } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import ProtectedRoute from '../components/ProtectedRoute';
@@ -51,6 +51,7 @@ export default function Dashboard() {
   const [active, setActive] = useState<string>('dashboard');
   const router = useRouter();
   const [puzzleVerified, setPuzzleVerified] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   // Station management
   const [stations, setStations] = useState<Station[]>([]);
@@ -343,8 +344,8 @@ export default function Dashboard() {
     if (!profileComplete && active !== 'settings') {
       if (active === 'dashboard' || active === 'drone-control') {
         return (
-          <div className="flex items-center justify-center h-full">
-            <div className="bg-white rounded-xl shadow-lg p-8 max-w-md w-full">
+          <div className="flex items-center justify-center min-h-[60vh] p-4">
+            <div className="bg-white rounded-xl shadow-lg p-6 md:p-8 max-w-md w-full">
               <div className="flex items-center gap-3 mb-4">
                 <AlertCircle className="w-8 h-8 text-yellow-500" />
                 <h2 className="text-xl font-bold text-gray-800">Complete Your Profile</h2>
@@ -397,16 +398,16 @@ export default function Dashboard() {
 
         return (
           <div className="space-y-6">
-            <div className="bg-white rounded-xl shadow-lg p-6">
-              <h2 className="text-2xl font-bold text-gray-800 mb-4">Farm Overview</h2>
+            <div className="bg-white rounded-xl shadow-lg p-4 md:p-6">
+              <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-4">Farm Overview</h2>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
                 <Card>
                   <CardHeader className="pb-2">
                     <CardTitle className="text-sm font-medium text-gray-600">Active Stations</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold">{stations.filter(s => s.status === 'active').length}</div>
+                    <div className="text-xl md:text-2xl font-bold">{stations.filter(s => s.status === 'active').length}</div>
                     <p className="text-xs text-gray-500">of {stations.length} total</p>
                   </CardContent>
                 </Card>
@@ -416,7 +417,7 @@ export default function Dashboard() {
                     <CardTitle className="text-sm font-medium text-gray-600">Temperature</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold flex items-center gap-2">
+                    <div className="text-xl md:text-2xl font-bold flex items-center gap-2">
                       <Thermometer className="w-5 h-5 text-red-500" />
                       {latestData?.temperature_C?.toFixed(1) || '--'}°C
                     </div>
@@ -429,7 +430,7 @@ export default function Dashboard() {
                     <CardTitle className="text-sm font-medium text-gray-600">Humidity</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold flex items-center gap-2">
+                    <div className="text-xl md:text-2xl font-bold flex items-center gap-2">
                       <Droplets className="w-5 h-5 text-blue-500" />
                       {latestData?.humidity_?.toFixed(0) || '--'}%
                     </div>
@@ -442,7 +443,7 @@ export default function Dashboard() {
                     <CardTitle className="text-sm font-medium text-gray-600">Wind Speed</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold flex items-center gap-2">
+                    <div className="text-xl md:text-2xl font-bold flex items-center gap-2">
                       <Wind className="w-5 h-5 text-gray-500" />
                       {latestData?.wind_kmh?.toFixed(1) || '--'} km/h
                     </div>
@@ -472,7 +473,7 @@ export default function Dashboard() {
               </Card>
 
               {/* Station Status Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
                 {stations.map(station => (
                   <Card key={station.id} className="hover:shadow-lg transition-shadow">
                     <CardHeader>
@@ -522,8 +523,8 @@ export default function Dashboard() {
         if (!profileComplete) {
           return (
             <div className="space-y-6">
-              <div className="bg-white rounded-xl shadow-lg p-6">
-                <h2 className="text-2xl font-bold text-gray-800 mb-4">Drone Control Center</h2>
+              <div className="bg-white rounded-xl shadow-lg p-4 md:p-6">
+                <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-4">Drone Control Center</h2>
                 <div className="bg-orange-50 border-l-4 border-orange-400 p-4">
                   <div className="flex items-center">
                     <AlertCircle className="h-6 w-6 text-orange-400 mr-3" />
@@ -556,8 +557,8 @@ export default function Dashboard() {
         }
         return (
           <div className="space-y-6">
-            <div className="bg-white rounded-xl shadow-lg p-6">
-              <h2 className="text-2xl font-bold text-gray-800 mb-4">Drone Control Center</h2>
+            <div className="bg-white rounded-xl shadow-lg p-4 md:p-6">
+              <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-4">Drone Control Center</h2>
               <DroneControl />
             </div>
           </div>
@@ -566,8 +567,8 @@ export default function Dashboard() {
       case 'settings':
         return (
           <div className="space-y-6">
-            <div className="bg-white rounded-xl shadow-lg p-6">
-              <h2 className="text-2xl font-bold text-gray-800 mb-6">User Settings</h2>
+            <div className="bg-white rounded-xl shadow-lg p-4 md:p-6">
+              <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-4 md:mb-6">User Settings</h2>
 
               {/* Profile Completion Status */}
               {!profileComplete && (
@@ -616,7 +617,7 @@ export default function Dashboard() {
                 <div className="space-y-4">
                   <h3 className="text-lg font-semibold text-gray-700">Profile Information</h3>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <Label htmlFor="displayName">
                         Display Name <span className="text-red-500">*</span>
@@ -749,16 +750,16 @@ export default function Dashboard() {
 
           return (
             <div className="space-y-6">
-              <div className="bg-white rounded-xl shadow-lg p-6">
-                <div className="flex justify-between items-start mb-6">
+              <div className="bg-white rounded-xl shadow-lg p-4 md:p-6">
+                <div className="flex flex-col sm:flex-row justify-between items-start gap-4 mb-6">
                   <div>
-                    <h2 className="text-2xl font-bold text-gray-800">{station.name}</h2>
+                    <h2 className="text-xl md:text-2xl font-bold text-gray-800">{station.name}</h2>
                     <p className="text-gray-600 flex items-center gap-2 mt-1">
                       <MapPin className="w-4 h-4" />
                       {station.location}
                     </p>
                   </div>
-                  <div className="flex gap-2">
+                  <div className="flex flex-wrap gap-2">
                     <Button
                       variant="outline"
                       size="sm"
@@ -780,13 +781,13 @@ export default function Dashboard() {
                 </div>
 
                 {/* Station Metrics */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
                   <Card>
                     <CardHeader className="pb-2">
                       <CardTitle className="text-sm">Temperature</CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <div className="text-2xl font-bold">{stationData?.temperature_C?.toFixed(1) || '--'}°C</div>
+                      <div className="text-xl md:text-2xl font-bold">{stationData?.temperature_C?.toFixed(1) || '--'}°C</div>
                     </CardContent>
                   </Card>
 
@@ -795,7 +796,7 @@ export default function Dashboard() {
                       <CardTitle className="text-sm">Humidity</CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <div className="text-2xl font-bold">{stationData?.humidity_?.toFixed(0) || '--'}%</div>
+                      <div className="text-xl md:text-2xl font-bold">{stationData?.humidity_?.toFixed(0) || '--'}%</div>
                     </CardContent>
                   </Card>
 
@@ -804,7 +805,7 @@ export default function Dashboard() {
                       <CardTitle className="text-sm">Wind Speed</CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <div className="text-2xl font-bold">{stationData?.wind_kmh?.toFixed(1) || '--'} km/h</div>
+                      <div className="text-xl md:text-2xl font-bold">{stationData?.wind_kmh?.toFixed(1) || '--'} km/h</div>
                     </CardContent>
                   </Card>
 
@@ -813,7 +814,7 @@ export default function Dashboard() {
                       <CardTitle className="text-sm">Rain Rate</CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <div className="text-2xl font-bold">{stationData?.rainrate_mm_h?.toFixed(1) || '--'} mm/h</div>
+                      <div className="text-xl md:text-2xl font-bold">{stationData?.rainrate_mm_h?.toFixed(1) || '--'} mm/h</div>
                     </CardContent>
                   </Card>
                 </div>
@@ -846,10 +847,10 @@ export default function Dashboard() {
         if (active === 'add-station') {
           return (
             <div className="space-y-6">
-              <div className="bg-white rounded-xl shadow-lg p-6">
-                <h2 className="text-2xl font-bold text-gray-800 mb-6">Add New Weather Station</h2>
+              <div className="bg-white rounded-xl shadow-lg p-4 md:p-6">
+                <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-4 md:mb-6">Add New Weather Station</h2>
 
-                <div className="max-w-md space-y-4">
+                <div className="max-w-full md:max-w-md space-y-4">
                   <div>
                     <Label htmlFor="station-name">Station Name</Label>
                     <Input
@@ -904,19 +905,33 @@ export default function Dashboard() {
 
   return (
     <ProtectedRoute>
-      <div className="min-h-screen flex bg-neutral-50">
+      <div className="min-h-screen flex bg-neutral-50 relative">
+        {/* Mobile Menu Overlay */}
+        {sidebarOpen && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden" onClick={() => setSidebarOpen(false)} />
+        )}
+
         <div className="flex flex-1">
           {/* Sidebar */}
-          <aside className="h-full w-64 bg-[#2ecc71] border-r border-green-300 shadow-md flex flex-col py-6 px-4">
-            <div className="mb-8 flex justify-center items-center">
-              <Image src="/images/logo.png" alt="Logo" width={80} height={80} className="rounded-full" />
+          <aside className={`fixed lg:static inset-y-0 left-0 h-full w-64 bg-[#2ecc71] border-r border-green-300 shadow-md flex flex-col py-6 px-4 z-50 transition-transform duration-300 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}>
+            <div className="mb-8 flex justify-between items-center">
+              <Image src="/images/logo.png" alt="Logo" width={80} height={80} className="rounded-full mx-auto lg:mx-0" />
+              <button
+                className="lg:hidden text-white hover:bg-white/20 p-2 rounded-lg"
+                onClick={() => setSidebarOpen(false)}
+              >
+                <X className="w-6 h-6" />
+              </button>
             </div>
             <nav className="flex-1 flex flex-col gap-1">
               <button
                 className={`flex items-center gap-3 px-3 py-2 rounded-md text-base font-normal transition-all duration-150 text-left ${
                   active === 'dashboard' ? 'bg-white/80 text-green-900 shadow-sm' : 'hover:bg-green-100 text-green-900'
                 }`}
-                onClick={() => setActive('dashboard')}
+                onClick={() => {
+                  setActive('dashboard');
+                  setSidebarOpen(false);
+                }}
               >
                 <Home className="w-5 h-5" />
                 <span className="truncate font-normal">Dashboard</span>
@@ -949,7 +964,10 @@ export default function Dashboard() {
                   className={`flex items-center gap-3 px-3 py-2 rounded-md text-sm font-normal transition-all duration-150 text-left ${
                     active === station.id ? 'bg-white/80 text-green-900 shadow-sm' : 'hover:bg-green-100 text-green-900'
                   }`}
-                  onClick={() => setActive(station.id)}
+                  onClick={() => {
+                    setActive(station.id);
+                    setSidebarOpen(false);
+                  }}
                 >
                   <span className={`w-2 h-2 rounded-full ${station.status === 'active' ? 'bg-green-600' : 'bg-gray-300'}`}></span>
                   <span className="truncate font-normal">{station.name}</span>
@@ -1009,7 +1027,10 @@ export default function Dashboard() {
                 className={`flex items-center gap-3 px-4 py-2 rounded-lg text-sm w-full transition-all duration-150 text-left ${
                   active === 'settings' ? 'bg-white text-green-800 shadow-lg' : 'hover:bg-white/20 text-white'
                 }`}
-                onClick={() => setActive('settings')}
+                onClick={() => {
+                  setActive('settings');
+                  setSidebarOpen(false);
+                }}
               >
                 <Settings className="w-4 h-4" />
                 <span className="font-medium">Settings</span>
@@ -1029,7 +1050,14 @@ export default function Dashboard() {
           </aside>
 
           {/* Main Content */}
-          <main className="flex-1 p-8 md:p-12 overflow-y-auto">
+          <main className="flex-1 p-4 sm:p-6 md:p-8 lg:p-12 overflow-y-auto">
+            {/* Mobile Menu Button */}
+            <button
+              className="lg:hidden fixed top-4 left-4 z-40 p-2 bg-green-600 text-white rounded-lg shadow-lg"
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+            >
+              <Menu className="w-6 h-6" />
+            </button>
             {loading ? (
               <div className="flex items-center justify-center h-full">
                 <div className="text-xl">Loading dashboard data...</div>
@@ -1043,7 +1071,7 @@ export default function Dashboard() {
         {/* Edit Station Modal */}
         {editingStation && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-            <div className="bg-white rounded-lg p-6 max-w-md w-full">
+            <div className="bg-white rounded-lg p-4 sm:p-6 max-w-md w-full mx-4">
               <h3 className="text-lg font-semibold mb-4">Edit Station</h3>
 
               <div className="space-y-4">
