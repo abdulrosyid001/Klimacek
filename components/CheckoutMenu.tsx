@@ -6,9 +6,7 @@ interface CheckoutMenuProps {
 
 const CheckoutMenu: React.FC<CheckoutMenuProps> = ({ links }) => (
   <section className="max-w-4xl mx-auto px-4 py-12 text-center bg-secondary">
-    <div className="bg-primary text-textSecondary p-4 rounded-lg mb-6">
-      Warna Custom Tailwind Aktif 🚀
-    </div>
+    {/* Elemen "Warna Custom Tailwind Aktif 🚀" dan background dihapus sesuai instruksi */}
     <h2 className="font-serif text-3xl font-bold text-textPrimary mb-8">Ready to Get Started?</h2>
     <div className="flex flex-wrap gap-6 justify-center">
       {links.map((link, idx) => (
