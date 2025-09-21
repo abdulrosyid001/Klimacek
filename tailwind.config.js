@@ -8,23 +8,20 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // Klimacek brown palette (added for consistent branding)
+        // Klimacek brown palette (for consistent branding)
         'klimacek-brown-50':  '#F5EFE6',
         'klimacek-brown-100': '#EADFCB',
         'klimacek-brown-300': '#DDBA7D',
         'klimacek-brown-500': '#8C5E3C',
         'klimacek-brown-700': '#5C3A21',
         'klimacek-brown-900': '#2E1A11',
-        // Existing project colors
-        'primary': '#6B4226',      // cokelat tua utama (navbar, tombol utama)
+        // Main project browns
+        'primary': '#6B4226',      // cokelat tua utama (navbar, tombol utama, highlight)
         'secondary': '#D2B48C',    // cokelat muda / background terang
         'accent': '#A0522D',       // cokelat sedang untuk hover/aksen
         'textPrimary': '#2E1A12',  // teks judul (gelap)
         'textSecondary': '#F5F5DC',// teks isi (beige terang)
-        // ...existing custom colors
-        'primary-900': '#1f4d2e',
-        'primary-700': '#3b7a20',
-        'primary-500': '#7aa34b',
+        // ...existing custom colors (unchanged)
         'accent-yellow': '#F7E69B',
         'beige': '#F4F1E7',
         'neutral-100': '#ffffff',
