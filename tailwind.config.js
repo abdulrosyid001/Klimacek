@@ -8,11 +8,11 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'primary': '#FFD700', // warna utama dari mockup
-        'secondary': '#1F2937', // warna background gelap dari mockup
-        'accent': '#F3F4F6', // warna aksen/background terang dari mockup
-        'textPrimary': '#111827', // warna teks utama (judul, heading)
-        'textSecondary': '#F9FAFB', // warna teks sekunder/paragraf
+  'primary': '#6B4226',      // cokelat tua utama (navbar, tombol utama)
+  'secondary': '#D2B48C',    // cokelat muda / background terang
+  'accent': '#A0522D',       // cokelat sedang untuk hover/aksen
+  'textPrimary': '#2E1A12',  // teks judul (gelap)
+  'textSecondary': '#F5F5DC',// teks isi (beige terang)
         // ...existing custom colors
         'primary-900': '#1f4d2e',
         'primary-700': '#3b7a20',

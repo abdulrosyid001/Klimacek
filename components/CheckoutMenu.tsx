@@ -9,13 +9,13 @@ const CheckoutMenu: React.FC<CheckoutMenuProps> = ({ links }) => (
     <div className="bg-primary text-textSecondary p-4 rounded-lg mb-6">
       Warna Custom Tailwind Aktif 🚀
     </div>
-    <h2 className="font-serif text-3xl font-bold text-primary mb-8 text-textPrimary">Ready to Get Started?</h2>
+    <h2 className="font-serif text-3xl font-bold text-textPrimary mb-8">Ready to Get Started?</h2>
     <div className="flex flex-wrap gap-6 justify-center">
       {links.map((link, idx) => (
         <a
           key={idx}
           href={link.href}
-          className="bg-primary text-textSecondary px-8 py-3 rounded-full font-semibold shadow hover:bg-accent hover:text-textPrimary transition-colors focus:outline focus:ring-2 focus:ring-primary"
+          className="bg-primary text-textSecondary px-8 py-3 rounded-full font-semibold shadow hover:bg-accent hover:text-secondary transition-colors focus:outline focus:ring-2 focus:ring-accent"
         >
           {link.label}
         </a>
