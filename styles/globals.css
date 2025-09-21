@@ -4,9 +4,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Poppins:wght@400;600&display=swap');
 
 html, body {
-  background: #F4F1E7;
+  background: #F4F1E7; /* beige background */
   font-family: 'Poppins', sans-serif;
-  color: #1f4d2e;
+  color: #6B4226; /* cokelat primary menggantikan hijau */
   min-height: 100vh;
 }
 
@@ -21,7 +21,7 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Merriweather', serif;
-  color: #1f4d2e;
+  color: #8C5E3C; /* klimacek-brown-500 untuk heading */
 }
 
 a {
