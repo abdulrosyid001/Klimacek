@@ -89,7 +89,7 @@ export default function Home() {
         <title>ATAMAGRI - Smart Agriculture Solutions</title>
       </Head>
       <Header />
-      <main className="bg-beige min-h-screen">
+  <main className="bg-klimacek-brown-50 min-h-screen"> {/* Color adjusted to Klimacek brown palette */}
         {/* 1. Garis besar dari website */}
         <Hero />
         {/* 2. Menu "Contact Us" + gambar background tulisan */}

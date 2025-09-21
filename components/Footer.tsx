@@ -3,14 +3,14 @@ import Link from 'next/link';
 
 export default function Footer() {
   return (
-    <footer className="bg-primary-900 text-neutral-100 py-12 mt-16">
+  <footer className="bg-klimacek-brown-900 text-klimacek-brown-50 py-12 mt-16"> {/* Color adjusted to Klimacek brown palette */}
       <div className="w-full max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-6 items-start overflow-hidden">
         {/* Logo & About */}
         <div className="flex flex-col">
           <div className="flex items-center mb-3">
             <img src="/images/logo.png" alt="Atama Agri Logo" className="h-12 w-12 rounded-full" />
           </div>
-          <p className="text-neutral-200 text-sm mb-4 leading-relaxed">
+          <p className="text-klimacek-brown-100 text-sm mb-4 leading-relaxed"> {/* Color adjusted to Klimacek brown palette */}
             Climate intelligence for smart agriculture. Empowering farmers with data-driven tools, IoT, and AI for a sustainable future.
           </p>
           <div className="flex gap-4 mt-4">
@@ -27,12 +27,12 @@ export default function Footer() {
               <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a2.994 2.994 0 0 0-2.112-2.112C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.386.574A2.994 2.994 0 0 0 .502 6.186C0 8.072 0 12 0 12s0 3.928.502 5.814a2.994 2.994 0 0 0 2.112 2.112C4.5 20.5 12 20.5 12 20.5s7.5 0 9.386-.574a2.994 2.994 0 0 0 2.112-2.112C24 15.928 24 12 24 12s0-3.928-.502-5.814zM9.75 15.5v-7l6.5 3.5-6.5 3.5z"/></svg>
             </a>
           </div>
-          <p className="text-neutral-300 text-xs mt-4">&copy; {new Date().getFullYear()} Atamagri. All rights reserved.</p>
+          <p className="text-klimacek-brown-300 text-xs mt-4">&copy; {new Date().getFullYear()} Atamagri. All rights reserved.</p> {/* Color adjusted to Klimacek brown palette */}
         </div>
 
         {/* Navigation */}
         <div className="flex flex-col">
-          <h4 className="font-semibold mb-3 text-accent-yellow">Navigation</h4>
+          <h4 className="font-semibold mb-3 text-klimacek-brown-300">Navigation</h4> {/* Color adjusted to Klimacek brown palette */}
           <ul className="space-y-2">
             <li><Link href="/" className="hover:underline">Home</Link></li>
             <li><Link href="/about" className="hover:underline">About</Link></li>
@@ -44,28 +44,28 @@ export default function Footer() {
 
         {/* Info & Contact */}
         <div className="flex flex-col">
-          <h4 className="font-semibold mb-3 text-accent-yellow">Info & Contact</h4>
-          <p className="text-neutral-200 text-sm">Mon-Fri: 08.00 - 17.00</p>
-          <p className="text-neutral-200 text-sm leading-relaxed">
+          <h4 className="font-semibold mb-3 text-klimacek-brown-300">Info & Contact</h4> {/* Color adjusted to Klimacek brown palette */}
+          <p className="text-klimacek-brown-100 text-sm">Mon-Fri: 08.00 - 17.00</p> {/* Color adjusted to Klimacek brown palette */}
+          <p className="text-klimacek-brown-100 text-sm leading-relaxed"> {/* Color adjusted to Klimacek brown palette */}
             Daratan, RT 2 RW 6, Senden, Tohudan, Colomadu, Karanganyar, Jawa Tengah
           </p>
-          <p className="text-neutral-200 text-sm">Phone: <a href="tel:+628123456789" className="underline">+62 812-3456-789</a></p>
-          <p className="text-neutral-200 text-sm">Email: <a href="mailto:info@atamagri.com" className="underline">info@atamagri.com</a></p>
+          <p className="text-klimacek-brown-100 text-sm">Phone: <a href="tel:+628123456789" className="underline">+62 812-3456-789</a></p> {/* Color adjusted to Klimacek brown palette */}
+          <p className="text-klimacek-brown-100 text-sm">Email: <a href="mailto:info@atamagri.com" className="underline">info@atamagri.com</a></p> {/* Color adjusted to Klimacek brown palette */}
         </div>
 
         {/* Subscribe Email */}
         <div className="flex flex-col">
-          <h4 className="font-semibold mb-3 text-accent-yellow">Subscribe</h4>
+          <h4 className="font-semibold mb-3 text-klimacek-brown-300">Subscribe</h4> {/* Color adjusted to Klimacek brown palette */}
           <form className="mt-2 flex flex-wrap gap-2">
             <input
               type="email"
               placeholder="Your email"
-              className="flex-1 min-w-[150px] max-w-xs px-3 py-2 rounded bg-neutral-200 text-primary-900 focus:outline-none"
+              className="flex-1 min-w-[150px] max-w-xs px-3 py-2 rounded bg-klimacek-brown-50 text-klimacek-brown-900 focus:outline-none"
               aria-label="Newsletter email"
             />
             <button
               type="submit"
-              className="bg-accent-yellow text-primary-900 px-4 py-2 rounded font-semibold hover:bg-primary-500 hover:text-white transition-colors"
+              className="bg-klimacek-brown-300 text-klimacek-brown-900 px-4 py-2 rounded font-semibold hover:bg-klimacek-brown-500 hover:text-klimacek-brown-50 transition-colors"
             >
               Subscribe
             </button>
