@@ -267,15 +267,15 @@ export default function EmailTest() {
                   </Button>
 
                   {emailLink && (
-                    <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded">
-                      <p className="text-sm text-green-800 font-semibold">
+                    <div className="mt-4 p-3 bg-klimacek-brown-50 border border-klimacek-brown-100 rounded"> {/* Color adjusted to Klimacek brown palette */}
+                      <p className="text-sm text-klimacek-brown-700 font-semibold"> {/* Color adjusted to Klimacek brown palette */}
                         Email link detected! Click below to complete sign-in:
                       </p>
                       <Button
                         onClick={() => runTest('verifyLink', () =>
                           emailService.verifyEmailLink(emailLink)
                         )}
-                        className="mt-2 bg-green-600 hover:bg-green-700"
+                        className="mt-2 bg-klimacek-brown-500 hover:bg-klimacek-brown-700"
                       >
                         Complete Sign In
                       </Button>
@@ -469,8 +469,9 @@ export default function EmailTest() {
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
                           <div className="flex items-center gap-2 mb-2">
+                            {/* Color adjusted to Klimacek brown palette */}
                             {result.success ? (
-                              <CheckCircle className="h-5 w-5 text-green-500" />
+                              <CheckCircle className="h-5 w-5 text-klimacek-brown-500" />
                             ) : (
                               <XCircle className="h-5 w-5 text-red-500" />
                             )}
@@ -547,7 +548,7 @@ export default function EmailTest() {
 
                     <Card>
                       <CardContent className="py-4">
-                        <div className="text-2xl font-bold text-green-600">{testReport.passed}</div>
+                        <div className="text-2xl font-bold text-klimacek-brown-700">{testReport.passed}</div> {/* Color adjusted to Klimacek brown palette */}
                         <p className="text-sm text-gray-500">Passed</p>
                       </CardContent>
                     </Card>
@@ -590,7 +591,7 @@ export default function EmailTest() {
                           <div key={type} className="flex items-center justify-between p-2 bg-gray-50 rounded">
                             <span className="font-medium">{type}</span>
                             <div className="flex gap-4">
-                              <span className="text-green-600">✓ {stats.passed}</span>
+                              <span className="text-klimacek-brown-700">✓ {stats.passed}</span> {/* Color adjusted to Klimacek brown palette */}
                               <span className="text-red-600">✗ {stats.failed}</span>
                             </div>
                           </div>
